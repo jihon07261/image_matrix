@@ -2,312 +2,839 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f7f9fc">
-<title>픽셀 행렬 연구소 | 인공지능 수학</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f8fc">
+<title>아다마르 곱</title>
 <style>
-:root{--bg:#f6f8fc;--ink:#17243b;--muted:#60718b;--line:#e2e8f2;--blue:#3156d4;--bluebg:#edf2ff;--orange:#f28c42;--white:#fff;--radius:20px;--shadow:0 8px 26px rgba(26,49,97,.06)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:15px;line-height:1.5}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,.file-btn:focus-visible{outline:3px solid #81aaff;outline-offset:3px}button:disabled{opacity:.45;cursor:not-allowed}header{background:#fff;border-bottom:1px solid var(--line)}.head{max-width:1340px;margin:auto;padding:17px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:21px;letter-spacing:-.6px}.logo{width:39px;height:39px;border-radius:12px;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:900;font-size:18px;letter-spacing:2px}.brand-sub{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:0}.nav{display:flex;gap:7px;background:#edf1f8;padding:5px;border-radius:14px}.nav button{border:0;background:transparent;color:#56647a;border-radius:10px;padding:10px 15px;font-size:14px;font-weight:750;min-height:42px}.nav button.on{background:#fff;color:var(--blue);box-shadow:0 2px 7px #1b2e4c1c}main{max-width:1340px;margin:0 auto;padding:26px 24px 56px}.page[hidden]{display:none!important}.eyebrow{font-weight:800;color:var(--blue);font-size:12px;letter-spacing:1px;margin-bottom:6px}.intro{display:flex;align-items:end;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:19px}.intro h1{font-size:clamp(24px,3vw,34px);line-height:1.18;letter-spacing:-1px;margin:0 0 7px}.intro p{margin:0;color:var(--muted);font-size:14px}.pill{display:inline-flex;align-items:center;gap:6px;background:#e9efff;color:#274eae;border-radius:30px;font-size:12px;font-weight:750;padding:8px 12px}.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}.tools{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-bottom:18px}.tool-group{display:flex;align-items:center;flex-wrap:wrap;gap:8px}.tool-label{color:#617089;font-size:13px;font-weight:750;white-space:nowrap}.segmented{display:flex;gap:4px;background:#eff2f8;border-radius:12px;padding:4px;max-width:100%;flex-wrap:wrap}.segmented button{border:0;border-radius:9px;background:transparent;color:#5f7087;padding:8px 13px;min-height:36px;font-size:13px;font-weight:750}.segmented button.active{color:#254db5;background:white;box-shadow:0 1px 5px #18284620}.btn{border:1px solid #ccd7e7;border-radius:11px;background:#fff;color:#2a3b56;padding:10px 14px;min-height:42px;font-size:13px;font-weight:750;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none}.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.btn.subtle{background:#f5f7fb}.btn.danger{color:#a14e3e}.btn:hover{border-color:#8aa5ec}.file-btn{position:relative;overflow:hidden}.file-btn input{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:100px}.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}.panel-title{font-size:16px;letter-spacing:-.3px;font-weight:850;margin:0}.panel-head{display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap;margin-bottom:15px}.hint{font-size:12px;color:var(--muted)}.matrix-edit{display:grid;gap:5px;max-width:440px;margin:16px auto 8px}.matrix-edit input{min-width:0;width:100%;height:57px;text-align:center;background:#f6f8fc;border:1px solid #dce4ef;border-radius:9px;color:#25344d;font-weight:750;font-size:clamp(12px,1.8vw,16px);font-variant-numeric:tabular-nums;padding:0 1px;appearance:textfield;-moz-appearance:textfield}.matrix-edit input::-webkit-inner-spin-button,.matrix-edit input::-webkit-outer-spin-button{appearance:none}.matrix-edit input.sel{background:#e8efff;border:2px solid var(--blue)}.picture-surface{position:relative;width:min(100%,530px);aspect-ratio:1;margin:12px auto;border-radius:12px;overflow:hidden;border:1px solid #d9e1ed;background:#fff;touch-action:none}.picture-surface canvas.pixels{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}.picture-surface canvas.overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.under-canvas{text-align:center;color:var(--muted);font-size:12px;margin-top:9px}.brushes{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px;margin:10px 0 16px}.brush{width:43px;height:43px;border-radius:11px;border:2px solid #d7dfea;color:var(--ink);font-size:12px;font-weight:850;font-variant-numeric:tabular-nums}.brush.sel{border-color:var(--blue);box-shadow:0 0 0 3px #3156d42b}.selected-panel{border-radius:14px;background:#f2f6ff;padding:14px;margin-top:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}.selected-panel .readout{white-space:nowrap;font-size:13px;font-weight:800;min-width:120px}.num-input{width:92px;padding:8px 9px;min-height:40px;border-radius:10px;border:1px solid #cbd7ec;background:white;font-weight:750;font-variant-numeric:tabular-nums}.range{flex:1;min-width:110px;accent-color:var(--blue);height:27px}.explain{font-size:13px;color:#5e6f89;margin-top:13px}.note{margin-top:18px;padding:13px 16px;background:#f0f4fc;border-radius:12px;border-left:3px solid var(--blue);color:#52617b;font-size:13px}.note strong{color:var(--ink)}.prompt{display:flex;gap:10px;align-items:flex-start;margin-top:14px;color:#586985;font-size:13px}.prompt i{font-style:normal;color:#3156d4;font-weight:900}.one-only{grid-column:1/-1}.upload-name{color:var(--muted);font-size:12px;white-space:normal;overflow-wrap:anywhere}.worktop{display:flex;flex-wrap:wrap;gap:9px;align-items:center;justify-content:space-between;margin-bottom:16px}.worktop .left,.worktop .right{display:flex;flex-wrap:wrap;gap:9px;align-items:center}.work-layout{display:grid;grid-template-columns:minmax(0,1.23fr) minmax(320px,.77fr);gap:18px;align-items:start}.stage-card{min-width:0}.stage-shell{position:relative;max-width:660px;margin:5px auto}.stage-img{width:min(100%,650px);margin:0 auto;border:1px solid #cbd6e9;background:#fff;cursor:crosshair}.stage-img canvas.pixels{image-rendering:pixelated;image-rendering:crisp-edges}.stage-img.placing{box-shadow:0 0 0 4px #a9c0ff}.numbers-scroll{height:min(58vw,600px);min-height:330px;overflow:auto;border:1px solid #d7e0ed;border-radius:12px;background:#f7f9fd;overscroll-behavior:contain;touch-action:pan-x pan-y}.matrix-view-options{display:flex;align-items:center;flex-wrap:wrap;gap:7px 12px;margin:2px 0 12px;padding:10px 12px;border:1px solid #dce5f4;border-radius:12px;background:#f3f6fe}.matrix-view-options[hidden]{display:none!important}.matrix-view-options .range{flex:1 1 105px;min-width:85px;max-width:210px}.matrix-view-options .btn{padding:7px 9px;min-height:34px;font-size:12px}.matrix-view-options .value{font-size:12px;color:#37549d;font-weight:800;font-variant-numeric:tabular-nums;min-width:100px}.matrix-zoom-tip{font-size:11px;color:#697993;flex:1 1 100%;margin:0}.numbers-scroll canvas{display:block;max-width:none;cursor:crosshair}.axis-note{font-size:12px;color:var(--muted);margin-top:10px}.toolbar-line{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0}.stickers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.sticker-card{border:1px solid #dfe5ef;border-radius:14px;padding:9px;background:#fbfcff;min-width:0}.stickerPick{width:100%;min-height:122px;border:2px solid transparent;background:#fff;border-radius:10px;padding:10px 4px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;touch-action:none;user-select:none;-webkit-user-select:none}.stickerPick.selected{border-color:#456ee2;background:#edf3ff}.stickerPick canvas{height:53px;max-width:100%;width:auto;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}.stickerPick strong{font-size:13px;line-height:1.2}.stickerPick small{font-size:11px;color:#67778d}.sticker-actions{display:flex;gap:5px;margin-top:8px}.sticker-actions .btn{padding:6px 5px;min-height:36px;font-size:11px;flex:1;min-width:0}.sticker-actions .file-btn input{font-size:50px}.section-sub{font-size:13px;color:var(--muted);margin:3px 0 14px}.status{font-size:13px;font-weight:750;color:#385bb2;min-height:21px;margin-top:12px}.operation{margin-top:18px}.operation-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.formula{font-weight:850;font-size:clamp(16px,2vw,21px);letter-spacing:-.3px;background:#f0f4ff;border-radius:12px;padding:13px 15px;line-height:1.6}.formula .clip{color:#b45e21}.op-sub{font-size:12px;color:var(--muted);margin:7px 0 14px}.matrices3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.matrix-small-card{min-width:0;background:#fcfdff;border:1px solid #e1e7f1;border-radius:13px;padding:9px}.matrix-small-title{font-size:12px;font-weight:850;margin:0 0 8px;white-space:nowrap}.matrix-small-title .letter{color:var(--blue);font-size:15px}.mini-scroll{max-height:340px;overflow:auto;border:1px solid #e3e7ed;border-radius:8px;background:#fff;overscroll-behavior:contain}.mini-matrix{display:grid;gap:1px;width:max-content;background:#e4e9f2;--mini-cell:18px}.mini-cell{height:var(--mini-cell);width:var(--mini-cell);background:#fff;border:0;color:#374660;font-size:clamp(5px,calc(var(--mini-cell)*.49),10px);font-weight:700;font-variant-numeric:tabular-nums;padding:0;text-align:center;overflow:hidden;line-height:1}.mini-cell.highlight{background:#dce8ff;outline:2px solid var(--blue);outline-offset:-2px;color:#1c408f}.mini-cell.cut{color:#b55a28}.empty-operation{border:1px dashed #c9d5e8;border-radius:12px;padding:25px;text-align:center;color:#6c7b93;background:#fafbff;font-size:13px}.editor{margin-top:14px;background:#f5f8ff;border:1px solid #d9e4fa;padding:13px;border-radius:14px}.editor-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:9px;margin-bottom:9px}.editor-visual{width:100%;max-height:244px;min-height:150px;overflow:auto;background:#fff;border:1px solid #dce5f4;border-radius:10px;display:grid;place-items:start center}.editor-visual canvas.pixel-edit{display:block;width:min(100%,240px);height:auto;aspect-ratio:1;object-fit:contain;image-rendering:pixelated;cursor:crosshair;margin:auto}.editor-visual canvas.numeric-edit{display:block;max-width:none;cursor:crosshair}.editor .selected-panel{margin-top:10px;padding:10px}.drag-ghost{position:fixed;z-index:100;pointer-events:none;background:#3156d4;color:#fff;border-radius:13px;box-shadow:0 12px 26px #10234b33;padding:8px 11px;font-size:13px;font-weight:800;transform:translate(15px,14px)}.drag-ghost[hidden]{display:none}.kbd{display:inline-block;background:#e7ecf6;padding:1px 6px;border-radius:5px;font-variant-numeric:tabular-nums}.utility-row{margin-top:14px;display:flex;gap:9px;flex-wrap:wrap;align-items:center}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}footer{text-align:center;padding:14px 20px 28px;color:#8793a5;font-size:12px}
-@media(min-width:701px) and (max-width:1000px){.work-layout{grid-template-columns:minmax(0,1.2fr) minmax(255px,.8fr)}.stickers{grid-template-columns:1fr}.sticker-card{display:flex;align-items:center;gap:6px}.stickerPick{flex:1;min-height:82px;flex-direction:row;padding:5px;flex-wrap:wrap;gap:4px}.stickerPick canvas{height:44px}.sticker-actions{flex-direction:column;width:77px;margin-top:0;flex:none}.sticker-actions .btn{min-height:30px}.matrices3{gap:8px}}@media(max-width:700px){.work-layout{grid-template-columns:minmax(0,1fr)}}@media(max-width:700px){.head{padding:12px 14px}.brand{font-size:18px}.brand-sub{font-size:10px}.nav{width:100%}.nav button{flex:1;font-size:12px;padding:8px 5px}main{padding:18px 12px 36px}.split{grid-template-columns:1fr}.card{padding:14px;border-radius:15px}.stickers{gap:6px}.sticker-card{padding:6px}.stickerPick{min-height:104px;padding:6px 2px}.stickerPick canvas{height:44px}.sticker-actions{flex-direction:column}.sticker-actions .btn{min-height:32px}.matrices3{grid-template-columns:1fr}.matrix-small-card{padding:9px}.mini-scroll{max-height:195px}.matrix-edit input{height:52px}.intro h1{font-size:25px}.numbers-scroll{height:460px}.selected-panel{gap:9px}.tool-group{gap:5px}.formula{font-size:16px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-/* Subtraction lab: same small-matrix layout, with an explicit result preview. */
-.subtraction .formula{background:#eef8f8}
-.subtraction .matrix-small-title .letter{color:#007c85}
-.subtraction .mini-cell.highlight{background:#d4f4f0;outline-color:#16898c;color:#13575c}
-.subtraction .op-result{margin-top:12px;padding:11px 13px;background:#f4f8fb;border:1px solid #dce7ef;border-radius:12px;font-size:13px;color:#425570}
-.subtraction .op-result strong{color:#192d45}
-.subtract-preview{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:12px 14px;margin-top:14px;border:1px solid #d5e8e6;border-radius:14px;background:#f5fbfa}
-.subtract-preview canvas{display:block;width:118px;height:118px;max-width:32%;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges;border:1px solid #c8d8db;border-radius:7px;background:#fff;flex:none}
-.subtract-preview .copy{flex:1;min-width:190px}
-.subtract-preview .copy p{font-size:12px;color:#5d6c79;margin:4px 0 10px}
-.subtract-preview .copy strong{font-size:14px}
-.subtract-preview .btn{background:#087e87;border-color:#087e87;color:#fff}
-.subtract-preview .btn:disabled{background:#e6efee;border-color:#cededb;color:#678481}
-@media(max-width:420px){.subtract-preview canvas{width:88px;height:88px}}
-/* Independent additive white-erasure stamps; symmetric UI with subtractive decorations. */
-.hole-palette{margin-top:23px;padding-top:18px;border-top:2px dashed #c8e1dc}
-.hole-palette .panel-title{color:#087f86}
-.hole-stickers .sticker-card{border-color:#d3e8e5;background:#f7fbfa}
-.hole-stickers .stickerPick.selected{border-color:#07848b;background:#e1f7f4}
-.hole-stickers .stickerPick canvas{max-height:55px}
-.hole-strength{margin:13px 0 0;padding:11px 13px;background:#f0faf8;border-radius:12px;display:flex;align-items:center;flex-wrap:wrap;gap:7px 12px}
-.hole-strength label{font-size:12px;font-weight:800;color:#24666b;white-space:nowrap}
-.hole-strength .range{accent-color:#087f86;flex:1 1 120px}
-.hole-strength small{width:100%;font-size:11px;color:#4a7474}
-.hole-help{margin-top:10px;background:#eff9f7;border-left-color:#168d89}
-.stage-img.erasing{box-shadow:0 0 0 4px #a2dfd4}
-.subtraction .mini-scroll{border-color:#d1e7e1}
-@media(min-width:701px) and (max-width:1000px){.hole-stickers{grid-template-columns:1fr}}
+:root{--ink:#182943;--sub:#65738b;--line:#dfe6f0;--panel:#fff;--main:#315fee;--main-soft:#eef3ff;--teal:#04a6a0;--bg:#f6f8fc;--neutral:#f3f5f8}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Pretendard,"Apple SD Gothic Neo","Noto Sans KR",system-ui,-apple-system,sans-serif}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #80aaff;outline-offset:3px}
+.app{max-width:1500px;margin:auto;padding:23px clamp(12px,2.6vw,36px) 40px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:27px}
+h1{font-size:clamp(29px,3.5vw,46px);font-weight:830;letter-spacing:-1.7px;margin:0;line-height:1.15}.nav{display:flex;gap:9px}.nav-btn{border:1px solid #dae2ef;border-radius:13px;background:#fff;padding:11px 17px;color:#455670;font-weight:780;font-size:15px;min-height:44px;white-space:nowrap}.nav-btn.active{color:#fff;background:#264fc4;border-color:#264fc4;box-shadow:0 4px 13px #254cc221}
+.page{display:none}.page.active{display:block}.panels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,1.8vw,22px);align-items:start}.panel{min-width:0;background:#fff;border:1px solid var(--line);border-radius:21px;padding:clamp(12px,1.8vw,22px);box-shadow:0 4px 22px #233f7510}.panel-top{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:36px;margin-bottom:16px}.math-label{font-size:clamp(21px,2.1vw,27px);font-weight:850;letter-spacing:-.5px}.dim{font-size:12px;color:#78879f;background:#f2f5fa;padding:6px 9px;border-radius:8px;font-weight:750}.panel-center{background:linear-gradient(160deg,#fff,#fafbfe)}.pixel-art{display:grid;grid-template-columns:repeat(3,1fr);width:min(100%,300px);aspect-ratio:1;margin:0 auto 20px;border:1px solid #d0d8e4;border-radius:11px;overflow:hidden}.pixel-art>div{border:1px solid #ffffff45}.number-matrix{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:min(100%,300px);aspect-ratio:1;margin:0 auto;border:1px solid #d9e1ee;border-radius:11px;overflow:hidden}.number-cell{display:grid;place-items:center;border-right:1px solid #dfe6f0;border-bottom:1px solid #dfe6f0;background:#f8faff;font-size:clamp(15px,2vw,22px);font-weight:720;font-variant-numeric:tabular-nums}.number-cell:nth-child(3n){border-right:0}.number-cell:nth-last-child(-n+3){border-bottom:0}.number-cell.changed{background:#edf5ff}
+.slider-matrix{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));width:min(100%,300px);aspect-ratio:1;border:1px solid #dce3ef;overflow:hidden;border-radius:11px;margin:0 auto 20px;background:#f8fafe}.scalar-cell{border-right:1px solid #dce3ed;border-bottom:1px solid #dce3ed;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;min-width:0;min-height:0;padding:2px 3px}.scalar-cell:nth-child(3n){border-right:0}.scalar-cell:nth-last-child(-n+3){border-bottom:0}.scalar-number{width:92%;min-width:0;height:27px;flex:0 0 auto;padding:1px 3px;border:1px solid transparent;background:transparent;border-radius:7px;text-align:center;font-size:clamp(13px,1.6vw,19px);font-weight:760;font-variant-numeric:tabular-nums;color:#244caa;appearance:textfield}.scalar-number:hover,.scalar-number:focus{border-color:#b6c8fb;background:#fff;outline:0}.scalar-number::-webkit-inner-spin-button,.scalar-number::-webkit-outer-spin-button,.range-number::-webkit-inner-spin-button,.range-number::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}.mini-range{width:90%;min-width:0;height:16px;flex:0 0 auto;accent-color:#3867df;cursor:ew-resize;touch-action:pan-y}.center-mark{margin:11px auto 0;text-align:center;font-weight:750;color:#97a4b9;letter-spacing:.03em;font-size:14px}
+.page2 .panel{padding:clamp(10px,1.3vw,18px)}.canvas-image{display:block;width:100%;max-width:430px;aspect-ratio:1;margin:auto;border-radius:10px;border:1px solid #d2dbe7;image-rendering:pixelated;image-rendering:crisp-edges;touch-action:none;user-select:none}.canvas-image.can-paint{cursor:crosshair}.matrix-canvas{display:block;width:100%;max-width:430px;aspect-ratio:1;margin:auto;background:#fff;border:1px solid #e0e5ee;border-radius:8px}.matrix-canvas.neutral{background:#f7f8fb}.matrix-bar{display:flex;align-items:center;justify-content:space-between;margin-top:16px;margin-bottom:8px;gap:8px;color:#7a879c;font-size:12px;font-weight:750}.subtle-btn{background:#f2f5fa;border:1px solid #e1e7f0;color:#53647e;border-radius:9px;padding:7px 10px;font-size:12px;font-weight:780;min-height:31px}.subtle-btn:active{background:#e6edfc}.canvas-stack{display:flex;flex-direction:column;gap:0}.tools{display:flex;gap:5px;flex-wrap:wrap;margin-top:11px;align-items:center}.tool{border:1px solid #dce3ed;background:#fff;color:#60708b;border-radius:8px;padding:6px 9px;font-size:12px;font-weight:780;min-height:34px}.tool.selected{border-color:#5578e9;background:#eef3ff;color:#224ccc}.tool.extra{margin-left:auto}.range-wrap{background:#f1f5ff;border:1px solid #dce5ff;border-radius:14px;padding:15px 13px 14px;margin-top:14px}.range-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font-size:14px;font-weight:800}.range-number{width:112px;max-width:60%;padding:4px 6px;border:1px solid transparent;background:transparent;border-radius:8px;text-align:right;color:#204dc4;font-size:21px;font-weight:800;font-variant-numeric:tabular-nums;appearance:textfield}.range-number:hover,.range-number:focus{background:#fff;border-color:#b6c8fb;outline:0}.range-number:disabled{opacity:.6}.main-range{display:block;width:100%;height:26px;accent-color:#315fee;cursor:ew-resize}.main-range:disabled{opacity:.5;cursor:default}.range-ticks{display:flex;justify-content:space-between;font-size:12px;color:#8b9ab2;padding:0 2px;font-variant-numeric:tabular-nums}.center-preview-pad{display:flex;align-items:center;justify-content:center;min-height:26px;gap:10px;margin-top:12px}.selected-count{font-size:12px;color:#59708c;font-weight:750}
+.modal-back{position:fixed;inset:0;z-index:200;background:#1b2844a8;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(5px)}.modal-back[hidden]{display:none}.dialog{width:min(100%,380px);background:#fff;padding:26px;border-radius:24px;box-shadow:0 25px 80px #0003}.dialog h2{margin:0 0 18px;font-size:23px}.dialog input{width:100%;height:51px;border:1px solid #cbd5e5;border-radius:12px;padding:10px 14px;font-size:23px;letter-spacing:6px;text-align:center}.dialog-actions{display:flex;gap:9px;margin-top:15px}.primary{flex:1;background:#2957df;color:white;border:0;border-radius:12px;padding:12px 15px;font-weight:780;min-height:46px}.secondary{background:#f0f3fa;border:0;border-radius:12px;padding:12px 15px;font-weight:750;color:#62718a;min-height:46px}.error{min-height:20px;text-align:center;color:#db3f54;font-size:13px;margin-top:8px}.zoom-dialog{width:min(96vw,1020px);height:min(90vh,980px);padding:16px;display:flex;flex-direction:column}.zoom-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.zoom-head h2{margin:0;font-size:21px}.zoom-scroll{flex:1;overflow:auto;border:1px solid #dae2ee;border-radius:12px;background:#f9fbff}.zoom-scroll canvas{display:block;width:1200px;height:1200px;max-width:none;image-rendering:auto}
+@media(max-width:700px){.page2 .panels{grid-template-columns:repeat(2,minmax(0,1fr))}.page2 .panel:last-child{grid-column:1/-1}.page2 .panel:last-child .canvas-stack{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.page2 .panel:last-child .matrix-bar{grid-column:2;grid-row:1;margin:0;align-self:start}.page2 .panel:last-child .matrix-canvas{grid-column:2;grid-row:2}.page2 .panel:last-child .canvas-image{grid-column:1;grid-row:1/3}}@media(max-width:620px){.topbar{align-items:flex-start;flex-direction:column;margin-bottom:17px}.nav{width:100%}.nav-btn{flex:1}.panels{grid-template-columns:1fr}.page2 .panels{grid-template-columns:1fr}.page2 .panel:last-child{grid-column:auto}.page2 .panel:last-child .canvas-stack{display:block}.page2 .panel:last-child .matrix-bar{margin-top:16px;margin-bottom:8px}.panel{padding:16px}.pixel-art,.number-matrix,.slider-matrix{width:min(100%,300px)}.app{padding:17px 12px 40px}.canvas-image,.matrix-canvas{max-width:430px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition-duration:0s!important}}
+
+/* Sticker extraction page */
+.sticker-page .canvas-image,.sticker-page .matrix-canvas{aspect-ratio:3/4;max-width:365px;height:auto}
+.sticker-page .canvas-image{width:100%;}
+.sticker-page .matrix-canvas{width:100%}
+.sticker-page .panel{padding:clamp(10px,1.3vw,18px)}
+.sticker-top-tools{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+.sticker-mode{font-size:12px;border:1px solid #dbe3ef;border-radius:9px;padding:8px 9px;background:#fff;color:#536078;font-weight:750}
+.sticker-mode.active{background:#ecf3ff;border-color:#5175df;color:#2450b9}
+.sticker-hint{font-size:12px;font-weight:720;color:#8290a7;line-height:1.5;min-height:22px;margin-top:8px}
+.sticker-canvas-wrap{position:relative;max-width:365px;margin:0 auto}
+.sticker-pop{position:absolute;bottom:8px;left:8px;right:8px;text-align:center;background:#fffdf2ec;border:1px solid #e3d7ab;border-radius:10px;padding:7px;font-size:12px;font-weight:730;color:#665222;pointer-events:none}
+.sticker-pop[hidden]{display:none}
+.sticker-crop-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 0}
+.sticker-crop-card{background:#f8faff;border:1px solid #dde6f6;border-radius:12px;padding:8px;display:flex;align-items:center;gap:9px;min-width:0}
+.sticker-crop-card canvas{width:58px;height:58px;object-fit:contain;background:#fff;border:1px solid #e3e8f1;border-radius:7px;image-rendering:pixelated}
+.sticker-crop-card .crop-label{min-width:0;font-size:12px;font-weight:760;line-height:1.45}
+.crop-label span{display:block;color:#8090a7;font-size:11px;font-weight:600}
+.sticker-card-placeholder{padding:13px;font-size:12px;color:#8290a7;background:#f7f8fc;border-radius:10px;text-align:center;margin-top:10px}
+.sticker-switch{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+.sticker-switch button{border:1px solid #dce5f0;background:#fff;color:#435a7a;border-radius:9px;padding:8px;font-weight:700;font-size:12px}
+.sticker-switch button.active{border-color:#3767de;background:#edf3ff;color:#2451b9}
+.sticker-preview-head{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:10px;font-size:13px;font-weight:750}
+.sticker-stats{font-size:12px;color:#71819b}
+.sticker-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.sticker-actions button{border-radius:9px;border:1px solid #dce4ef;padding:9px 10px;font-size:12px;font-weight:760;background:white;color:#465977}
+.sticker-actions .go{background:#2c5cdc;color:#fff;border:0}
+.portable-stickers{margin-top:15px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.portable-card{border-radius:12px;padding:8px;background:#f8faff;border:1px solid #dae4f5;min-width:0}
+.portable-card .mini-top{display:flex;align-items:center;gap:8px}
+.portable-card canvas{width:60px;height:60px;border:1px solid #dce4f1;background:#fff;border-radius:8px;object-fit:contain;image-rendering:pixelated}
+.portable-card .mini-desc{font-size:11px;color:#72819a}.portable-card strong{font-size:12px;display:block}
+.portable-card .mini-tools{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+.portable-card button{font-size:11px;font-weight:750;padding:7px 8px;border-radius:7px;border:1px solid #cedaf0;color:#3256aa;background:#f0f5ff}
+.portable-card button.chosen{background:#315ede;color:white}
+.portable-stickers .empty-stickers{grid-column:1/-1;font-size:12px;color:#7a8ba5;padding:15px;text-align:center;background:#f4f7fc;border-radius:9px}
+.page3-sticker-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:15px 0 7px;font-weight:800;font-size:13px}
+@media(max-width:1100px){.sticker-crop-row,.portable-stickers{grid-template-columns:1fr}}
+@media(max-width:700px){.sticker-page .panels{grid-template-columns:repeat(2,minmax(0,1fr))}.sticker-page .panel:last-child{grid-column:1/-1}.sticker-page .panel:last-child .canvas-stack{display:block}.sticker-page .canvas-image,.sticker-page .matrix-canvas{max-width:365px}}
+@media(max-width:620px){.sticker-page .panels{grid-template-columns:1fr}.sticker-page .panel:last-child{grid-column:auto}.sticker-crop-row{grid-template-columns:repeat(2,minmax(0,1fr))}.portable-stickers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Accessory extraction and drag-to-stamp */
+.sticker-page .panel-center .matrix-canvas{background:#f7f8fb}
+.sticker-page .erase-selected{background:#315fee;color:white;border-color:#315fee}
+.sticker-page .sticker-crop-card canvas{flex:0 0 58px}
+.page3-sticker-head .mini-controls{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.portable-card{cursor:grab;touch-action:none;user-select:none;transition:border-color .12s,background .12s}
+.portable-card:active{cursor:grabbing}
+.portable-card.chosen{border:2px solid #4169e1;background:#eef3ff}
+.portable-card canvas{pointer-events:none}
+.drag-ghost{position:fixed;z-index:250;pointer-events:none;transform:translate(-50%,-50%);width:78px;height:78px;border:2px solid #5d7fe4;border-radius:14px;background:#ffffffef;box-shadow:0 10px 30px #172f6745;padding:5px;display:none}
+.drag-ghost canvas{width:100%;height:100%;image-rendering:pixelated;object-fit:contain}
+.portable-card .mini-desc{line-height:1.4}
+@media(max-width:690px){.page3-sticker-head{align-items:flex-start;flex-wrap:wrap}.page3-sticker-head .mini-controls{width:100%;justify-content:flex-start}}
+
+/* Page 3: independent image-valued additive matrix C */
+.addition-page .canvas-image{max-width:430px}
+.addition-page .panel-center{background:linear-gradient(165deg,#ffffff,#f7faff)}
+.addition-c-wrap{position:relative;max-width:430px;margin:auto}
+.addition-c-wrap .canvas-image{background:#000;touch-action:none;cursor:crosshair}
+.addition-c-wrap .drop-outline{position:absolute;inset:0;border-radius:10px;border:3px dashed transparent;pointer-events:none;transition:border-color .15s,background .15s}
+.addition-c-wrap .drop-outline.is-over{border-color:#527cf3;background:#4776ef27}
+.addition-page .page3-sticker-head{margin-top:14px}
+.addition-page .portable-stickers{margin-top:0}
+.addition-page .sticker-hint{min-height:26px}
+.addition-page .portable-card{min-height:74px}
+.addition-page .portable-card.chosen{border-color:#365fee;background:#eaf1ff}
+@media(max-width:700px){.addition-page .panels{grid-template-columns:repeat(3,minmax(0,1fr))}.addition-page .panel:last-child{grid-column:auto}.addition-page .panel:last-child .canvas-image,.addition-page .panel:last-child .matrix-canvas{grid-column:auto;grid-row:auto}}
+@media(max-width:620px){.addition-page .panels{grid-template-columns:1fr}.addition-page .panel:last-child{grid-column:auto}}
+
+/* Non-destructive stamp placement preview for C and the resulting A-C. */
+.addition-page .result-preview-wrap{position:relative;max-width:430px;margin:0 auto}
+.addition-page .result-preview-wrap .canvas-image{width:100%}
+.addition-page .stamp-preview-layer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;image-rendering:pixelated;border-radius:10px}
+.addition-page .result-preview-badge{position:absolute;top:9px;left:9px;pointer-events:none;border:1px solid #bed5ff;background:#f4f8fff0;border-radius:8px;padding:5px 8px;font-size:11px;color:#214da6;font-weight:850;box-shadow:0 2px 9px #28477427}
+.addition-page .result-preview-badge[hidden]{display:none}
+.addition-page .stamp-preview-layer.preview-active{outline:2px solid #4d8ae680;outline-offset:-2px}
+/* Page 3: C subtraction and selection-based pixel-value editing */
+.addition-page .addition-c-wrap .selection-overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;image-rendering:pixelated;border-radius:10px}
+/* A-C follows the C selection throughout dragging and while values are being edited. */
+.addition-page .result-selection-overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;image-rendering:pixelated;border-radius:10px}
+.addition-page .result-selection-hint{position:absolute;top:8px;right:8px;z-index:3;pointer-events:none;font-size:11px;line-height:1.3;font-weight:800;color:#8b410d;background:#fff8e8ed;border:1px solid #f5cd81;border-radius:8px;padding:5px 8px;box-shadow:0 2px 8px #80501d22}
+.addition-page .result-selection-hint[hidden]{display:none}
+
+.addition-page .c-edit-tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:12px 0 8px}
+.addition-page .c-edit-tools .tool{padding:7px 9px;font-size:12px;min-height:35px;border:1px solid #d9e3f0;border-radius:9px;background:#fff;color:#586a89;font-weight:740}
+.addition-page .c-edit-tools .tool.selected{background:#e7efff;border-color:#6587e2;color:#2951b5}
+.addition-page .c-edit-tools .selection-count{margin-left:auto;color:#65748c;font-size:12px;font-weight:730}
+.addition-page .c-edit-range{background:#f5f8ff;border:1px solid #e2e9f5;border-radius:13px;padding:10px 12px;margin-top:7px}
+.addition-page .c-edit-range .range-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:5px;font-size:12px;font-weight:780}
+.addition-page .c-edit-range input[type=number]{width:84px;min-height:36px;text-align:center;border-radius:8px;border:1px solid #d0dced;background:white;color:#263f70;font-weight:760}
+.addition-page .c-edit-range input[type=range]{width:100%;min-height:28px;accent-color:#3762d6;cursor:pointer}
+.addition-page .c-edit-range input:disabled{opacity:.48;cursor:not-allowed}
+.addition-page .c-edit-range .range-ticks{display:flex;justify-content:space-between;color:#7988a0;font-size:11px}
+.addition-page .c-edit-range .range-ticks span:nth-child(2){margin-left:10px}
+.addition-page .c-drop-target{cursor:crosshair}
+.addition-page .c-edit-tools .c-clear-select{margin-left:0}
+@media(max-width:450px){.addition-page .c-edit-tools .selection-count{margin-left:0}}
+
+/* Readable window onto the otherwise very dense 96x128 neutral multiplier matrix. */
+.sheet-b-detail{margin:12px auto 2px;max-width:365px;border:1px solid #dce5f2;background:#ffffff;border-radius:12px;padding:10px}
+.sheet-b-detail-header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;font-size:12px;font-weight:780;color:#4b6182}
+.sheet-b-detail-header small{font-size:10px;color:#8594aa;font-weight:650}
+.sheet-b-viewport{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:1px;background:#e4eaf5;border:1px solid #e4eaf5;border-radius:8px;overflow:hidden}
+.sheet-b-viewport .bval{min-width:0;aspect-ratio:1;display:grid;place-items:center;background:#f9fbff;color:#3b568b;font-size:clamp(9px,1.05vw,12px);font-weight:750;font-variant-numeric:tabular-nums;letter-spacing:-.4px}
+.sheet-b-viewport .bval.selected{background:#d6e5ff;color:#1648a5}
+.sheet-b-viewport .bval.modified{background:#ecf0fb;color:#2147aa}
+@media(max-width:700px){.sheet-b-viewport .bval{font-size:clamp(9px,1.3vw,12px)}}
 </style>
 </head>
 <body>
-<header><div class="head"><div class="brand"><span class="logo" aria-hidden="true">▦</span><div>픽셀 행렬 연구소<div class="brand-sub">인공지능 수학 · 이미지를 수로 표현하기</div></div></div><nav class="nav" aria-label="활동 페이지"><button class="on" type="button" data-page="1">01 · 픽셀과 행렬</button><button type="button" data-page="2">02 · 행렬 스티커</button></nav></div></header>
+<div class="app">
+<header class="topbar"><h1>아다마르 곱</h1><nav class="nav"><button type="button" class="nav-btn active" id="nav1">1페이지</button><button type="button" class="nav-btn" id="nav2">2페이지</button><button type="button" class="nav-btn" id="nav3">3페이지 →</button></nav></header>
 <main>
-<section id="page1" class="page">
-<div class="intro"><div><div class="eyebrow">ACTIVITY 01</div><h1>숫자 하나가 픽셀 하나가 된다</h1><p>행렬의 원소를 직접 고치고, 똑같은 정보를 그림으로 확인해 보세요.</p></div><span class="pill">0 = 검은색 · 255 = 흰색</span></div>
-<div class="card tools">
-<div class="tool-group"><span class="tool-label">행렬 크기</span><div class="segmented" id="labSizes"><button data-size="3" type="button">3×3</button><button data-size="5" type="button" class="active">5×5</button><button data-size="7" type="button">7×7</button></div></div>
-<div class="tool-group"><label class="tool-label" for="labPreset">예시</label><select class="num-input" id="labPreset" style="width:126px"><option value="heart">검은 하트</option><option value="smile">웃는 얼굴</option><option value="checker">체커보드</option><option value="gradient">명암 단계</option><option value="blank">흰 도화지</option></select></div>
-<label class="btn file-btn">내 이미지 불러오기<input id="labUpload" type="file" accept="image/*" aria-label="이미지를 작은 행렬로 변환"></label>
-<div class="tool-group"><span class="tool-label">보는 방법</span><div class="segmented" id="labViews"><button type="button" data-view="both" class="active">나란히</button><button type="button" data-view="matrix">행렬</button><button type="button" data-view="image">이미지</button></div></div>
+<section class="page active" id="page1" aria-label="1페이지">
+<div class="panels">
+<article class="panel"><div class="panel-top"><span class="math-label">A</span><span class="dim">3 × 3</span></div><div class="pixel-art" id="pix1a"></div><div class="number-matrix" id="num1a"></div></article>
+<article class="panel panel-center"><div class="panel-top"><span class="math-label">B</span><span class="dim">3 × 3</span></div><div class="slider-matrix" id="factors1"></div><div class="center-mark">⊙</div></article>
+<article class="panel"><div class="panel-top"><span class="math-label">A ⊙ B</span><span class="dim">3 × 3</span></div><div class="pixel-art" id="pix1c"></div><div class="number-matrix" id="num1c"></div></article>
 </div>
-<div class="split" id="labSplit">
-<article class="card" id="labMatrixPanel"><div class="panel-head"><h2 class="panel-title">수로 보는 이미지 · A</h2><span class="hint">칸마다 0~255 입력</span></div><div class="matrix-edit" id="labMatrix" aria-label="편집 가능한 픽셀 행렬"></div><p class="explain">숫자가 커질수록 픽셀이 밝아집니다. 원소 하나를 고쳐 보세요.</p></article>
-<article class="card" id="labImagePanel"><div class="panel-head"><h2 class="panel-title">그림으로 보는 행렬</h2><span class="hint">이미지 칸을 눌러 색칠</span></div><div class="picture-surface" id="labSurface"><canvas id="labImage" class="pixels" aria-label="행렬을 바꾼 흑백 픽셀 이미지"></canvas><canvas id="labOverlay" class="overlay" aria-hidden="true"></canvas></div><div class="under-canvas">이미지를 직접 터치해도 행렬의 숫자가 바뀝니다.</div><div class="brushes" id="brushes"><span class="tool-label">색칠할 값</span></div><div class="selected-panel"><div class="readout" id="labCoordinate">선택한 원소: (1, 1)</div><input id="labSelectedValue" class="num-input" type="number" inputmode="numeric" min="0" max="255" aria-label="선택한 원소 값"><input id="labSlider" class="range" type="range" min="0" max="255" aria-label="선택한 원소 밝기"></div></article>
-</div>
-<div class="note"><strong>수학적 약속</strong> · 이번 수업은 흑백 이미지의 <strong>밝기값</strong>을 수로 나타냅니다. <strong>0은 검은색, 255는 흰색</strong>이며 그사이 값은 회색입니다. 사진을 업로드하면 같은 규칙으로 변환됩니다.</div>
-<div class="prompt"><i>생각해 보기</i><span>값 0, 128, 255는 각각 어떻게 보이나요? 5×5 행렬에서 숫자 하나를 바꾸면 어떤 부분이 달라질까요?</span></div>
 </section>
-<section id="page2" class="page" hidden>
-<div class="intro"><div><div class="eyebrow">ACTIVITY 02</div><h1>행렬을 더하고 빼서 나만의 사진 만들기</h1><p>장식 스티커는 빼서 검게, 구멍 도장은 더해서 희게! 두 연산을 직접 비교해 보세요.</p></div><span class="pill">덧셈 · 뺄셈 → 픽셀의 변화</span></div>
-<div class="card worktop"><div class="left"><label class="btn file-btn primary">사람 사진 불러오기<input id="baseUpload" type="file" accept="image/*" aria-label="사람 사진 업로드"></label><label class="tool-label" for="baseSize">기본 사진 크기</label><select id="baseSize" class="num-input" style="width:112px"><option value="48">48×48</option><option value="64" selected>64×64</option><option value="80">80×80</option></select><span class="upload-name" id="baseName">현재: 예시 인물(교체 가능)</span></div><div class="right"><button class="btn" type="button" id="undoBtn">↶ 되돌리기</button><button class="btn danger" type="button" id="resetBtn">처음으로</button><button class="btn" type="button" id="exportBtn">이미지 저장</button></div></div>
-<div class="work-layout">
-<article class="card stage-card"><div class="panel-head"><h2 class="panel-title">현재 사진의 픽셀 행렬</h2><span class="hint" id="stageDimensions">64 × 64 = 4,096 픽셀</span></div><div class="toolbar-line"><div class="segmented" id="stageViews"><button type="button" data-stage-view="image" class="active">이미지 보기</button><button type="button" data-stage-view="matrix">행렬 보기</button></div><label class="tool-label"><input type="checkbox" id="gridToggle"> 픽셀 격자 표시</label></div>
-<div id="stageMatrixTools" class="matrix-view-options" hidden><label class="tool-label" for="stageMatrixZoom">숫자 칸 크기</label><input id="stageMatrixZoom" class="range" type="range" min="6" max="38" step="2" value="10" aria-label="행렬 숫자 칸 크기 조절"><span class="value" id="stageMatrixZoomValue">10px · 조밀하게</span><button id="fitStageMatrix" class="btn" type="button">전체 맞춤</button><button id="magnifyStageMatrix" class="btn" type="button">숫자 크게</button><p class="matrix-zoom-tip">작은 숫자로 명암 분포를 한눈에 비교하고, 확대하면 원소를 더 쉽게 선택하여 수정할 수 있습니다.</p></div>
-<div class="stage-shell"><div id="stageImageWrap" class="picture-surface stage-img"><canvas id="stageImage" class="pixels" aria-label="행렬로 표현한 사람 이미지"></canvas><canvas id="stageOverlay" class="overlay" aria-hidden="true"></canvas></div><div id="numberScroll" class="numbers-scroll" hidden><canvas id="stageNumbers" aria-label="전체 0부터 255까지 픽셀 숫자 행렬" role="img"></canvas></div></div>
-<div id="stageStatus" class="status" role="status">오른쪽 스티커를 고른 뒤 사진 속 위치를 터치하세요.</div><p class="axis-note">이미지 또는 행렬의 <strong>모든 픽셀</strong>을 선택해 수정할 수 있습니다. 스티커는 선택 후 놓거나, 손가락으로 끌어 옮길 수 있습니다.</p><div class="selected-panel"><div class="readout" id="stageCoordinate">현재 사진의 원소 (1, 1)</div><input id="stageValue" class="num-input" type="number" min="0" max="255" inputmode="numeric" aria-label="현재 사진의 선택된 원소 값"><input id="stageSlider" class="range" type="range" min="0" max="255" aria-label="현재 사진의 선택된 원소 수정"></div><div class="utility-row"><button type="button" class="btn subtle" id="cancelStickerBtn">스티커 선택 해제</button><button type="button" class="btn subtle" id="csvBtn">현재 행렬 CSV 저장</button></div></article>
-<aside class="card"><div class="panel-head"><h2 class="panel-title">빼기 스티커 행렬 B</h2><span class="hint">꾸미기 행렬 3개</span></div><p class="section-sub">선글라스·하트·코주부 안경을 사진에 끌어다 놓아 보세요. <strong>현재 이미지 A에서 스티커 행렬 B를 빼면</strong> 그림의 해당 부분이 어두워집니다. 픽셀값은 <strong>0=검정, 255=흰색</strong>이며, 음수는 0으로 제한됩니다.</p><div class="stickers" id="stickerPalette"></div><p class="hint" style="margin:8px 0 15px"><strong>스티커 미리보기</strong>는 흰 배경에 검은 그림입니다. 연산용 B에서는 검은 모양 부분이 양수(빼는 양), 배경은 0(변화 없음)입니다. 사진의 픽셀값에서 B를 빼므로 선글라스나 코주부 안경이 검게 나타납니다.</p><div id="stickerEditor" class="editor" hidden><div class="editor-top"><strong id="editorTitle">스티커 원소 편집</strong><button class="btn" id="closeEditor" type="button">닫기</button></div><div class="segmented" id="stickerViews"><button type="button" class="active" data-edit-view="source">원본 스티커 행렬</button><button type="button" data-edit-view="matrix">연산용 행렬</button><button type="button" data-edit-view="image">연산용 이미지</button></div><p class="hint" style="margin:9px 0">원본 스티커 S는 <strong>0=검정, 255=흰색</strong>입니다. 연산용 행렬은 <strong>변화량 = 255 − S</strong>로 만듭니다. 검은 모양에 양수값을 주고 배경에는 0을 주어, 스티커는 빼고 구멍은 더할 수 있습니다.</p><div class="editor-visual" id="editorVisual"><canvas id="stickerNumbers" class="numeric-edit"></canvas><canvas id="stickerImage" class="pixel-edit" hidden></canvas></div><div class="selected-panel"><div class="readout" id="stickerCoord">B의 원소 (1,1)</div><input class="num-input" type="number" min="0" max="255" inputmode="numeric" id="stickerValue" aria-label="스티커 원소 수정"><input type="range" class="range" min="0" max="255" id="stickerSlider" aria-label="스티커 원소 밝기"></div><p class="hint" style="margin:9px 0 0">행렬 계산에서 <strong>0은 변화 없음</strong>을 뜻합니다. 스티커 B의 양수값은 <strong>뺄셈</strong>에, 구멍 D의 양수값은 <strong>덧셈</strong>에 사용됩니다. 예: 180 − 255 → 0(검정), 80 + 255 → 255(흰색).</p></div><section class="hole-palette" aria-label="덧셈용 구멍 도장 선택">
-  <div class="panel-head"><h2 class="panel-title">구멍 도장 행렬 D · 덧셈</h2><span class="hint">사진에 끌어 놓기</span></div>
-  <p class="section-sub">스티커와 별개의 연산입니다. 구멍 모양을 사진의 원하는 위치에 놓으면 <strong>현재 사진 C + 구멍 행렬 D</strong>를 계산합니다. 도장 모양에 해당하는 부분의 픽셀값을 더해 <strong>흰색 영역을 만듭니다.</strong></p>
-  <div class="stickers hole-stickers" id="holePalette"></div><p class="hint" style="margin:8px 0 12px">카드의 검은 그림은 도장 <strong>모양</strong>을 나타냅니다. 실제 덧셈 행렬 D에서는 <strong>하얗게 지울 부분에 255</strong>, 나머지는 0을 배치합니다.</p>
-  <div class="hole-strength"><label for="holeStrength">더하는 정도 <strong id="holeStrengthValue">255</strong></label><input id="holeStrength" class="range" type="range" min="0" max="255" step="1" value="255"><small>255: 해당 부분을 흰색으로 · 작은 값: 조금만 밝게 만들기</small></div>
-  <div class="note hole-help"><strong>구멍은 투명한 구멍이 아닙니다.</strong> 이번 수업에서는 행렬의 값을 <strong>더해서 흰색으로 지운 모양</strong>을 만듭니다. 사진의 어두운 부분에 놓아 비교해 보세요.</div>
- </section>
- <div class="note" style="margin-top:14px"><strong>붙이는 방법</strong><br>빼기 스티커와 더하기 구멍 도장 모두 왼쪽 위 원소를 사진의 선택한 칸에 맞춥니다. 사진 범위를 벗어난 부분은 계산하지 않습니다.</div></aside>
-</div>
-<article class="card operation"><div class="operation-head"><h2 class="panel-title">원소별 뺄셈 관찰</h2><span class="hint">검은 장식을 붙인 순간의 행렬을 비교합니다.</span></div><div id="operationContent" class="empty-operation">스티커를 사진에 놓으면 이곳에 <strong>이전 행렬 − 스티커 행렬 = 결과 행렬</strong>이 나타납니다.</div></article>
-<article class="card operation subtraction" aria-label="행렬 덧셈 체험">
-<div class="operation-head"><h2 class="panel-title">원소별 덧셈 관찰</h2><span class="hint">하얀 구멍 도장을 놓은 순간의 행렬을 비교합니다.</span></div>
-<p class="section-sub">원형·하트형·사각형 중 마음에 드는 <strong>구멍 도장 D</strong>를 끌어다 놓아 보세요. 뺄셈과 독립적으로 현재 사진 C의 원하는 위치에서 값을 더합니다. 계산 뒤 세 행렬의 대응 원소를 눌러 확인하세요.</p>
-<div id="subtractionContent" class="empty-operation" aria-live="polite">구멍 도장을 사진에 놓으면 <strong>더하기 전 행렬 C + 도장 행렬 D = 결과 행렬 E</strong>가 나타납니다.</div>
+<section class="page page2 sticker-page" id="page2" aria-label="2페이지">
+<div class="panels">
+<article class="panel">
+  <div class="panel-top"><span class="math-label">A</span><span class="dim">96 × 128</span></div>
+  <div class="sticker-canvas-wrap"><canvas id="sheetOriginal" class="canvas-image can-paint" width="384" height="512" aria-label="꾸미기 스티커를 드래그하여 지울 영역 선택"></canvas></div>
+  <div class="sticker-top-tools"><button id="editSticker" class="sticker-mode active" type="button">드래그 칠하기</button><button id="rectSticker" class="sticker-mode" type="button">사각형 영역</button></div>
+  <div class="sticker-top-tools" id="sheetBrushes"><button class="tool" data-sheet-brush="1" type="button">1칸</button><button class="tool" data-sheet-brush="3" type="button">3칸</button><button class="tool selected" data-sheet-brush="7" type="button">7칸</button><button class="tool" data-sheet-brush="15" type="button">15칸</button></div>
+  <div class="sticker-hint">드래그로 영역을 선택한 뒤 B를 0으로 바꾸면 검정색으로 마스킹됩니다.</div>
+  <div class="matrix-bar"><span>96 × 128</span><button class="subtle-btn zoom" type="button" data-zoom="sa">숫자 확대</button></div><canvas id="sheetOriginalNums" class="matrix-canvas" width="768" height="1024" aria-label="원본 스티커 숫자 행렬"></canvas>
 </article>
-<div class="note"><strong>행렬 연산과 픽셀 표시</strong> · 0=검정, 255=흰색입니다. 검은 장식을 만드는 뺄셈에서 <strong>80 − 255 = −175 → 0(검정)</strong>, 흰 구멍을 만드는 덧셈에서 <strong>80 + 255 = 335 → 255(흰색)</strong>로 표시합니다. 픽셀값이 0~255를 벗어나면 그 범위로 제한합니다.</div>
-<div class="prompt"><i>생각해 보기</i><span>선글라스를 빼면 검어지고 구멍 도장을 더하면 희어지는 까닭은 무엇일까요? 같은 자리에 두 연산을 여러 번 반복하면 어떻게 될까요?</span></div>
+<article class="panel panel-center">
+  <div class="panel-top"><span class="math-label">B</span><span class="dim">96 × 128</span></div>
+  <canvas id="sheetMask" class="matrix-canvas neutral" width="768" height="1024" aria-label="원소값이 표기된 96 곱하기 128 B행렬"></canvas>
+  <div class="range-wrap"><div class="range-top"><span>×</span><input type="number" id="sheetFactorInput" class="range-number" inputmode="decimal" min="0" max="255" step="any" value="1.00" aria-label="드래그한 영역의 B값 직접 입력" disabled></div>
+    <input type="range" id="sheetFactorSlider" class="main-range" min="0" max="100" step="0.001" value="50" aria-label="선택 영역 B값 슬라이더" disabled><div class="range-ticks"><span>0</span><span>1</span><span>255</span></div></div>
+  <div class="sheet-b-detail" aria-label="B행렬의 확대된 숫자 원소">
+    <div class="sheet-b-detail-header"><span>B 원소 상세 (9×9)</span><small id="sheetBFocusLabel">중앙 영역</small></div>
+    <div class="sheet-b-viewport" id="sheetBViewport" aria-live="off"></div>
+  </div>
+  <div class="center-preview-pad"><span class="selected-count" id="sheetSelectedCount">0칸</span><button type="button" id="eraseSheetMarked" class="subtle-btn erase-selected">선택 영역 0</button><button class="subtle-btn zoom" type="button" data-zoom="sb">확대</button></div>
+</article>
+<article class="panel">
+  <div class="panel-top"><span class="math-label" title="원소별 아다마르 곱: B=0이면 검정색, B=1이면 원본 유지">A ⊙ B</span><span class="dim">96 × 128</span></div>
+  <canvas id="sheetResult" class="canvas-image" width="384" height="512" aria-label="B가 0인 곳은 검정색으로 마스킹한 결과 이미지"></canvas>
+  <div class="matrix-bar"><span>결과 행렬</span><button class="subtle-btn zoom" type="button" data-zoom="sc">확대</button></div>
+  <canvas id="sheetResultNums" class="matrix-canvas" width="768" height="1024" aria-label="소거 결과 숫자 행렬"></canvas>
+  <div class="sticker-preview-head"><span>남아 있는 장식 자동 추출</span><span class="sticker-stats" id="sheetSurvivorCount">0 / 2</span></div>
+  <div id="sheetSavedCards" class="sticker-crop-row"></div>
+  <div class="sticker-actions"><button type="button" id="restorePicked">선택 부분 복원</button><button type="button" id="clearPicked">B = 1 전체 초기화</button><button type="button" class="go" id="toPage3">3페이지로 가져가기 →</button></div>
+</article></div></section>
+<section class="page page2 addition-page" id="page3" aria-label="3페이지">
+ <div class="panels">
+  <article class="panel">
+   <div class="panel-top"><span class="math-label">A</span><span class="dim">40 × 40</span></div>
+   <canvas id="portrait" class="canvas-image" width="400" height="400" aria-label="기본 인물 이미지 행렬 A"></canvas>
+   <div class="matrix-bar"><span>원본 행렬</span><button class="subtle-btn zoom" data-zoom="a" type="button">숫자 확대</button></div>
+   <canvas id="num2a" class="matrix-canvas" width="720" height="720" aria-label="원본 숫자 행렬 A"></canvas>
+  </article>
+  <article class="panel panel-center">
+   <div class="panel-top"><span class="math-label">C</span><span class="dim">40 × 40 · 초기값 0</span></div>
+   <div class="addition-c-wrap"><canvas id="cPicture" class="canvas-image c-drop-target" width="400" height="400" aria-label="C행렬에서 드래그로 원소를 선택하거나 스티커를 놓는 영역"></canvas><canvas id="cSelectionOverlay" class="selection-overlay" width="400" height="400" aria-hidden="true"></canvas><canvas id="cStampPreview" class="stamp-preview-layer" width="400" height="400" aria-hidden="true"></canvas><div class="drop-outline" id="cDropOutline" aria-hidden="true"></div></div>
+   <div class="c-edit-tools" id="cBrushTools"><button class="tool selected" data-c-brush="1" type="button">1칸</button><button class="tool" data-c-brush="3" type="button">3칸</button><button class="tool" data-c-brush="5" type="button">5칸</button><button class="tool" id="cRectMode" type="button">사각형</button><button class="tool c-clear-select" id="cUnselect" type="button">선택 해제</button><span class="selection-count" id="cSelectedCount">0칸 선택</span></div>
+   <div class="c-edit-range"><div class="range-top"><span>C의 선택 원소값</span><input id="cValueInput" type="number" min="0" max="255" step="1" value="0" disabled inputmode="numeric" aria-label="선택한 C 행렬 원소값 직접 입력"></div><input id="cValueSlider" type="range" min="0" max="255" step="1" value="0" disabled aria-label="선택한 C 행렬 원소값 슬라이더"><div class="range-ticks"><span>0</span><span>128</span><span>255</span></div></div>
+   <div class="page3-sticker-head"><span>2페이지에서 추출한 스티커</span><div class="mini-controls"><button type="button" id="undoC" class="subtle-btn">되돌리기</button><button type="button" id="clearC" class="subtle-btn">C 초기화</button></div></div>
+   <div id="portableStickers" class="portable-stickers" aria-label="C로 옮길 스티커 목록"><span class="empty-stickers">2페이지에서 스티커를 남겨 주세요.</span></div>
+   <div class="sticker-hint" id="stickerPlacementHint" aria-live="polite">스티커를 C로 가져가면 오른쪽에 배치 미리보기가 나타납니다.</div>
+   <div class="matrix-bar"><span>C의 원소</span><button class="subtle-btn zoom" data-zoom="b" type="button">숫자 확대</button></div>
+   <canvas id="num2b" class="matrix-canvas" width="720" height="720" aria-label="스티커가 배치된 C의 숫자 행렬"></canvas>
+  </article>
+  <article class="panel">
+   <div class="panel-top"><span class="math-label">A − C</span><span class="dim">40 × 40</span></div>
+   <div class="result-preview-wrap"><canvas id="result2" class="canvas-image" width="400" height="400" aria-label="A에서 C를 원소별로 뺀 결과 이미지"></canvas><canvas id="resultStampPreview" class="stamp-preview-layer" width="400" height="400" aria-hidden="true"></canvas><canvas id="resultSelectionOverlay" class="result-selection-overlay" width="400" height="400" aria-hidden="true"></canvas><span class="result-selection-hint" id="resultSelectionHint" hidden>C에서 선택한 영역</span><span class="result-preview-badge" id="previewResultLabel" hidden>배치 미리보기 · A − C</span></div>
+   <div class="matrix-bar"><span>뺄셈 결과 행렬</span><button class="subtle-btn zoom" data-zoom="c" type="button">숫자 확대</button></div>
+   <canvas id="num2c" class="matrix-canvas" width="720" height="720" aria-label="A 빼기 C 숫자 행렬"></canvas>
+  </article>
+ </div>
 </section>
 </main>
-<div class="drag-ghost" id="dragGhost" hidden aria-hidden="true"></div>
-<footer>픽셀 행렬 연구소 · 이 HTML 파일은 별도의 서버나 인터넷 연결 없이도 실행됩니다.</footer>
+</div>
+<div class="modal-back" id="passwordModal" hidden><form id="passwordForm" class="dialog"><h2>비밀번호</h2><input id="passwordInput" type="password" inputmode="numeric" autocomplete="off" maxlength="8" aria-label="2·3페이지 비밀번호" required><div class="error" id="passwordError" aria-live="polite"></div><div class="dialog-actions"><button class="secondary" type="button" id="closePassword">취소</button><button class="primary" type="submit">확인</button></div></form></div>
+<div class="modal-back" id="zoomModal" hidden><div class="dialog zoom-dialog" role="dialog" aria-modal="true" aria-label="행렬 확대"><div class="zoom-head"><h2 id="zoomTitle">A</h2><button class="secondary" id="closeZoom" type="button">닫기</button></div><div class="zoom-scroll"><canvas id="zoomCanvas" width="1200" height="1200"></canvas></div></div></div>
 <script>
-(()=>{'use strict';
-const $=id=>document.getElementById(id),$$=sel=>Array.from(document.querySelectorAll(sel));
-const clamp=v=>Math.min(255,Math.max(0,Math.round(Number.isFinite(Number(v))?Number(v):0)));
-const bound=(v,a,b)=>Math.max(a,Math.min(b,v));
-const setActive=(sel,attr,value)=>{$$(sel).forEach(b=>{const on=b.dataset[attr]===String(value);b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});};
-function drawDensity(canvas,values,w,h){if(!canvas||!values)return;canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d',{alpha:false});const img=ctx.createImageData(w,h);for(let i=0;i<values.length;i++){const p=4*i,g=values[i];img.data[p]=g;img.data[p+1]=g;img.data[p+2]=g;img.data[p+3]=255;}ctx.putImageData(img,0,0);}
-// Ordinary photos use luminance 0=black, 255=white. Transparent sticker uploads become nonnegative ink-strength masks; subtract ink for dark decorations, add for white erasure. Alpha=0 -> 0 (no change).
-function grayscaleCanvas(canvas,transparent=false){const {width:w,height:h}=canvas,src=canvas.getContext('2d',{willReadFrequently:true}).getImageData(0,0,w,h).data,arr=new Uint8ClampedArray(w*h);for(let k=0;k<arr.length;k++){const p=k*4,l=src[p]*.2126+src[p+1]*.7152+src[p+2]*.0722,a=src[p+3]/255;arr[k]=Math.round(transparent?(255-l)*a:l);}return arr;}
-// Shape preview vs. operand: the artwork preview is NOT the add/subtract
-// operand matrix. 0 in the operand means 'do not change the underlying image'.
-function drawStampArtwork(canvas,values,w,h){
- const preview=new Uint8ClampedArray(values.length);
- for(let i=0;i<values.length;i++)preview[i]=255-values[i];
- drawDensity(canvas,preview,w,h);
+(() => {
+'use strict';
+const W=40,N=W*W;
+const A3=[35,125,235,75,180,250,15,105,210];
+const FACTOR3=new Array(9).fill(1);
+// Nonlinear slider: preserve the 0..1 curve, concentrate more space near 1 on the 1..255 side.
+// Positions: 0 -> 0x, 50 -> 1x, 100 -> 255x.
+function positionToFactor(position){
+  const p=Math.max(0,Math.min(100,Number(position)));
+  if(p<=50)return 1-Math.pow(1-p/50,3);
+  return Math.pow(255,Math.pow((p-50)/50,5));
 }
-function fillFitCanvas(img,w,h,transparent){const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d',{willReadFrequently:true});if(!transparent){ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);}const ar=Math.min(w/img.width,h/img.height),dw=img.width*ar,dh=img.height*ar;ctx.drawImage(img,(w-dw)/2,(h-dh)/2,dw,dh);return c;}
-function loadImageFile(file){return new Promise((resolve,reject)=>{if(!file||!file.type.startsWith('image/'))return reject(Error('이미지 파일만 선택할 수 있습니다.'));const url=URL.createObjectURL(file),img=new Image();img.onload=()=>{URL.revokeObjectURL(url);resolve(img);};img.onerror=()=>{URL.revokeObjectURL(url);reject(Error('이미지를 불러올 수 없습니다.'));};img.src=url;});}
-function downloadBlob(blob,name){const a=document.createElement('a'),u=URL.createObjectURL(blob);a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500);}
-function segmentEvents(group,attribute,fn){const dashed=attribute.replace(/[A-Z]/g,s=>'-'+s.toLowerCase());$(group).addEventListener('click',e=>{const b=e.target.closest('button[data-'+dashed+']');if(b)fn(b.dataset[attribute]);});}
-let page='1';$$('.nav button').forEach(b=>b.addEventListener('click',()=>{page=b.dataset.page;$$('.nav button').forEach(x=>x.classList.toggle('on',x===b));$('page1').hidden=page!=='1';$('page2').hidden=page!=='2';if(page==='2')refreshStage();else renderLab();window.scrollTo({top:0,behavior:'instant'});}));
-// --- Activity 01: small matrix editor ---
-let labN=5,labValues=new Uint8ClampedArray(25),labView='both',labSelected=0,brush=255,labImageSource=null,labDrawing=false;
-const patterns={heart:(r,c,n)=>{if(n===5){const rows=['01110','11111','11111','01110','00100'];return rows[r][c]==='1'?0:255;}if(n===3){const rows=['101','111','010'];return rows[r][c]==='1'?0:255;}const rows=['0110110','1111111','1111111','1111111','0111110','0011100','0001000'];return rows[r][c]==='1'?0:255;},smile:(r,c,n)=>{const x=(c+.5-n/2)/(n/2),y=(r+.5-n/2)/(n/2);if(x*x+y*y>.9)return 255;if(y<-.13&&Math.abs(x)>.24&&Math.abs(x)<.69)return 0;if(y>.04&&y<.7&&Math.abs(x)<.68&&y>.18+.6*x*x)return 35;return 200;},checker:(r,c)=>((r+c)%2?235:25),gradient:(r,c,n)=>Math.round((r+c)/Math.max(1,2*n-2)*255),blank:()=>255};
-function labPreset(){const type=$('labPreset').value,fn=patterns[type];labValues=Uint8ClampedArray.from({length:labN*labN},(_,i)=>fn(Math.floor(i/labN),i%labN,labN));labImageSource=null;labSelected=0;renderLab();}
-function labFromImage(img){const cv=fillFitCanvas(img,labN,labN,false);labValues=grayscaleCanvas(cv);labSelected=0;renderLab();}
-function redrawLabMatrix(){const root=$('labMatrix');root.style.gridTemplateColumns=`repeat(${labN},minmax(0,1fr))`;root.replaceChildren();for(let i=0;i<labValues.length;i++){const input=document.createElement('input');input.type='number';input.min=0;input.max=255;input.inputMode='numeric';input.value=labValues[i];input.dataset.index=i;input.setAttribute('aria-label',`${Math.floor(i/labN)+1}행 ${i%labN+1}열 원소`);input.classList.toggle('sel',i===labSelected);root.append(input);}}
-function drawOverlay(canvas,base,rows,cols,selected,grid,preview=null){const rect=base.getBoundingClientRect();if(rect.width<1)return;const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.max(1,Math.round(rect.height*dpr));const ctx=canvas.getContext('2d'),cw=canvas.width/cols,ch=canvas.height/rows;ctx.clearRect(0,0,canvas.width,canvas.height);if(grid){ctx.strokeStyle='rgba(52,70,101,.32)';ctx.lineWidth=Math.max(1,dpr*.7);for(let x=1;x<cols;x++){ctx.beginPath();ctx.moveTo(Math.round(x*cw),0);ctx.lineTo(Math.round(x*cw),canvas.height);ctx.stroke();}for(let y=1;y<rows;y++){ctx.beginPath();ctx.moveTo(0,Math.round(y*ch));ctx.lineTo(canvas.width,Math.round(y*ch));ctx.stroke();}}
-if(preview){const {r,c,sticker}=preview;ctx.fillStyle=preview.mode==='sub'?'rgba(8,127,134,.16)':'rgba(49,86,212,.20)';ctx.fillRect(c*cw,r*ch,sticker.w*cw,sticker.h*ch);for(let sy=0;sy<sticker.h;sy++)for(let sx=0;sx<sticker.w;sx++){const dr=r+sy,dc=c+sx,v=sticker.values[sy*sticker.w+sx];if(v&&dr>=0&&dc>=0&&dr<rows&&dc<cols){const gray=preview.mode==='sub'?0:v;ctx.fillStyle=`rgba(${gray},${gray},${gray},.82)`;ctx.fillRect(dc*cw,dr*ch,cw+.1,ch+.1);}}ctx.strokeStyle=preview.mode==='sub'?'#07868b':'#3156d4';ctx.lineWidth=3*dpr;ctx.setLineDash([7*dpr,5*dpr]);ctx.strokeRect(c*cw+1,r*ch+1,sticker.w*cw-2,sticker.h*ch-2);ctx.setLineDash([]);}
-if(selected>=0){const r=Math.floor(selected/cols),c=selected%cols;ctx.strokeStyle='#f18c31';ctx.lineWidth=3*dpr;ctx.strokeRect(c*cw+1.5*dpr,r*ch+1.5*dpr,cw-3*dpr,ch-3*dpr);}}
-function renderLab(){drawDensity($('labImage'),labValues,labN,labN);redrawLabMatrix();$('labCoordinate').textContent=`선택한 원소: (${Math.floor(labSelected/labN)+1}, ${labSelected%labN+1})`;$('labSelectedValue').value=labValues[labSelected];$('labSlider').value=labValues[labSelected];const single=labView!=='both';$('labSplit').style.gridTemplateColumns=single?'minmax(0,1fr)':'';$('labMatrixPanel').hidden=labView==='image';$('labImagePanel').hidden=labView==='matrix';requestAnimationFrame(()=>{if(labView!=='matrix')drawOverlay($('labOverlay'),$('labImage'),labN,labN,labSelected,true);});}
-function labSetSelected(i){if(i<0||i>=labValues.length)return;labSelected=i;const cells=$$('#labMatrix input');cells.forEach((a,k)=>a.classList.toggle('sel',k===i));$('labCoordinate').textContent=`선택한 원소: (${Math.floor(i/labN)+1}, ${i%labN+1})`;$('labSelectedValue').value=labValues[i];$('labSlider').value=labValues[i];requestAnimationFrame(()=>{if(labView!=='matrix')drawOverlay($('labOverlay'),$('labImage'),labN,labN,labSelected,true);});}
-function labSetVal(i,v,source){if(i<0||i>=labValues.length)return;labValues[i]=clamp(v);labSelected=i;drawDensity($('labImage'),labValues,labN,labN);const inputs=$$('#labMatrix input');if(source!=='grid'&&inputs[i])inputs[i].value=labValues[i];inputs.forEach((a,k)=>a.classList.toggle('sel',k===i));$('labCoordinate').textContent=`선택한 원소: (${Math.floor(i/labN)+1}, ${i%labN+1})`;$('labSelectedValue').value=labValues[i];$('labSlider').value=labValues[i];requestAnimationFrame(()=>{if(labView!=='matrix')drawOverlay($('labOverlay'),$('labImage'),labN,labN,labSelected,true);});}
-$('labMatrix').addEventListener('focusin',e=>{if(e.target.matches('input[data-index]'))labSetSelected(+e.target.dataset.index);});$('labMatrix').addEventListener('input',e=>{if(e.target.matches('input[data-index]')&&e.target.value!=='')labSetVal(+e.target.dataset.index,e.target.value,'grid');});$('labMatrix').addEventListener('change',e=>{if(e.target.matches('input[data-index]')){labSetVal(+e.target.dataset.index,e.target.value,'grid');e.target.value=clamp(e.target.value);}});
-function locateSmall(ev){const rect=$('labImage').getBoundingClientRect();return bound(Math.floor((ev.clientY-rect.top)/rect.height*labN),0,labN-1)*labN+bound(Math.floor((ev.clientX-rect.left)/rect.width*labN),0,labN-1);}
-$('labSurface').addEventListener('pointerdown',e=>{if(e.button!==0)return;labDrawing=true;$('labSurface').setPointerCapture(e.pointerId);labSetVal(locateSmall(e),brush);});$('labSurface').addEventListener('pointermove',e=>{if(labDrawing)labSetVal(locateSmall(e),brush);});['pointerup','pointercancel','lostpointercapture'].forEach(n=>$('labSurface').addEventListener(n,()=>labDrawing=false));
-$('labSelectedValue').addEventListener('input',e=>{if(e.target.value!=='')labSetVal(labSelected,e.target.value);});$('labSlider').addEventListener('input',e=>labSetVal(labSelected,e.target.value));
-[0,64,128,192,255].forEach(v=>{const b=document.createElement('button');b.type='button';b.className='brush'+(v===brush?' sel':'');b.style.background=`rgb(${v},${v},${v})`;b.style.color=v<128?'#fff':'#1e2d45';b.textContent=v;b.setAttribute('aria-label',`붓 값 ${v}`);b.addEventListener('click',()=>{brush=v;$$('.brush').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');});$('brushes').append(b);});
-segmentEvents('labSizes','size',v=>{labN=+v;setActive('#labSizes button','size',v);if(labImageSource)labFromImage(labImageSource);else labPreset();});segmentEvents('labViews','view',v=>{labView=v;setActive('#labViews button','view',v);renderLab();});$('labPreset').addEventListener('change',labPreset);$('labUpload').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{labImageSource=await loadImageFile(f);labFromImage(labImageSource);$('labPreset').value='blank';}catch(err){alert(err.message);}e.target.value='';});
-// --- Activity 02: portrait, subtractive dark decorations, additive white cutouts ---
-let N=64,base=new Uint8ClampedArray(N*N),work=base.slice(),baseImageSource=null,view='image',showGrid=false,stageSelected=32*N+32,armed=-1,hover=null,lastOperation=null,lastSubtraction=null,armedMode='add',opCell={r:0,c:0},subCell={r:0,c:0},history=[],stickerEditorIndex=-1,stickerEditView='source',stickerEditorMode='add',stickerCellSelected=0,drag=null,matrixCellSize=10,matrixFit=false,actualMatrixCellSize=10;
-const portrait=document.createElement('canvas');portrait.width=64;portrait.height=64;const pc=portrait.getContext('2d');
-function makePortrait(){const x=pc;x.clearRect(0,0,64,64);x.fillStyle='#fff';x.fillRect(0,0,64,64);x.fillStyle='#f0f0f0';x.beginPath();x.ellipse(32,40,30,31,0,0,Math.PI*2);x.fill();x.fillStyle='#525252';x.beginPath();x.moveTo(0,64);x.lineTo(5,54);x.quadraticCurveTo(10,50,23,49);x.lineTo(41,49);x.quadraticCurveTo(56,51,59,56);x.lineTo(64,64);x.fill();x.fillStyle='#f4f4f4';x.beginPath();x.moveTo(23,49);x.lineTo(32,60);x.lineTo(41,49);x.lineTo(39,64);x.lineTo(25,64);x.fill();x.fillStyle='#adadad';x.fillRect(25,43,14,12);x.fillStyle='#bcbcbc';x.beginPath();x.ellipse(18,33,4,7,0,0,7);x.ellipse(46,33,4,7,0,0,7);x.fill();x.fillStyle='#d9d9d9';x.beginPath();x.ellipse(32,30,16,23,0,0,7);x.fill();x.fillStyle='#363636';x.beginPath();x.moveTo(16,25);x.quadraticCurveTo(12,8,25,7);x.quadraticCurveTo(34,2,43,9);x.quadraticCurveTo(52,14,47,27);x.lineTo(44,23);x.lineTo(42,18);x.quadraticCurveTo(33,23,23,17);x.lineTo(20,24);x.lineTo(17,32);x.fill();x.fillStyle='#454545';x.fillRect(23,30,7,2);x.fillRect(35,30,7,2);x.fillStyle='#555';x.fillRect(26,33,2,3);x.fillRect(38,33,2,3);x.fillStyle='#a1a1a1';x.fillRect(32,35,2,6);x.fillRect(30,40,4,2);x.fillStyle='#8b8b8b';x.fillRect(28,46,8,1);x.fillRect(30,47,4,1);x.fillStyle='#a1a1a1';x.fillRect(20,44,2,3);x.fillRect(42,44,2,3);return portrait;}
-function baseDemo(n){const img=makePortrait(),c=fillFitCanvas(img,n,n,false);return grayscaleCanvas(c);}
-function embeddedSticker(name,w,h,encoded){const raw=atob(encoded),values=new Uint8ClampedArray(w*h);for(let i=0;i<values.length;i++)values[i]=raw.charCodeAt(i);return {name,w,h,values};}
-const stickers=[
-  embeddedSticker('선글라스',30,19,'AAceFgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVGwUAAC9uSR0EAAAAAAAAAAAAAAAAAAAAAAAAABlHaisAB3zmzWglBAAAAAAAAAAAAAAAAAAAAAAAH1Onz3UFH7ni39l2IwAAAAAAAAAAAAAAAAAAAAAbXbO+wKwcOs7e2+XrehoAAAAAAAAAAAAAAAAAABFZwce1vL02SNXa6+3h4mkPAAAAAAAAAAAAAAAABknF39vJuMNCQ9Tk9NvN38lJBQAAAAAAAAAAAAAAMKrZtsviysM+LdDz6NbY2uObLAAAAAAAAAAAAAAZdNPGwr/Y370rEr/mztbZ2tvQbRIAAAAAAAAAAAVRpsTAwLu01bcRAI/UxMnKzc7UoEUAAAAAAAAAAC9/tri3srGpv40AAFHLwsTGyMTDtmsmAAAAAAAAEluTrqyxsbCquVAAAA6Zyr7Fx8O+w39UHgAAAAAQS2qlqayvsaq0lA4AAAAmvMO/w8G/w5xYVzouLTVPWXytpqmtrK2wKgAAAAAAPMXIvsHBwbVdVFBRU05VVJatqauqsrc+AAAAAAAAADi51sjEwcNtThgJCg1JXKyzsrfFsTsAAAAAAAAAAAAZhszX0tN5NgAAAAAsZb7Ky8KFHAAAAAAAAAAAAAYABUORtqhZDQAAAAAITp64lEoJAAcAAAAAAAAAAAUKDxcvUV0sBwYAAAYIJFdPLhUPCAQAAAAAAAAAAAAAAAUEAAgMBwQAAAQFCgUAAAAAAAAAAAAA'),
-  embeddedSticker('하트',25,23,'AAAAD1p+hoJpJgAAAAAAJ2qDhn5YDgAAAAAAOpp3SDk9XI5iAAAAZJFePzhGdJc4AAAAMqtZNzw+OjM5jG4AcYw6NDo+PDZXpy8ABpR5W2NfXVtcWFCOc5BQWFxbXV9kW3iRBTundndxb21qaWpncqZzZ2ppa21vcXd3pjhqp4SCf358eXd1c3V8dnJ1d3l8fn+ChahnhKeQjYqHhIKAfnt8fHt7foCChIeKjZCngo2plZKNiYaEgn9+fX19foCChIaJjZKVqYqLsJqWko2Kh4SBgYGBgIGBhIeKjZKWmrCIcbahnJeTkIuJh4WEg4OFh4mMkJOXm6C3bjm1pJ6ZlpWSj4yKiIeHio2PkpWWmZ+ktTYFlrKgnJaVk5COi4mJiYuOkZOVlpugspQEAD69pKCZlZKQjo2Li4uNjpCSlZmgpL48AAAAgLqhnpmUkpGPjo6Oj5GSlJqeorx+AAAAABGls6GemZWUk5KSkpOTlZmeorSiDwAAAAAAJrSwoqCbl5WVlZWVmJygorGzJAAAAAAAAAAytrGko56amZmZmp6ipLK2MAAAAAAAAAAAADO2tKWkoqCfoKKkpbW1MgAAAAAAAAAAAAAALK27qKimpqaoqLusKQAAAAAAAAAAAAAAAAAbmsKsrKyrrcKYGgAAAAAAAAAAAAAAAAAAAAl6xrett8V3CAAAAAAAAAAAAAAAAAAAAAAAAEyyx7FKAAAAAAAAAAAAAAAAAAAAAAAAAAAAIX0fAAAAAAAAAAAAAAA='),
-  embeddedSticker('코주부 안경',33,21,'AAABAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAEAJHnU5qdiJQABAQAAAAAAAAAAAgAdWJzg4ooxAAEABAAy/////////6IAAQAAAAAAAAACAHr/////////WgAEBAHO//////////+4BwIBAgICAgIBiv///////////goCBQWo/7JHPZbd/+l5DAUAAAAAAAYGpv2waFOFu/3+fQsCAAAABBOFzvD69q4iAAAWNC80HgAAH6TL9frRmEcAAAAANywAav///+vk////lpr//////6yF////6uT///+MABAc//+u//+MJAEAHHT/////3+Lm/////44kAQAac///punwfPr//4MAAAICAABb//9BC3qCf+r/gwAAAgIAAFv///+nACL//yMFCwQECAcE+/8iTJiLhPb/IgULBAQIBwT6/1MABQLi/6IAAAAAAAB8//s3iIuMgsv/ogAAAAAAAHz//xIEBABt//+2SRoWPaD//5VWloiLhpv//7ZJGhY9oP//mgAEAAIBlf/////8////rS+PhoqJiIW1//////z///+2CgIBAAABAEjB+v///9NiAXCaoainm5RWRsf9////0F4AAAEAAAAAAgAADh4gBwAAKqivsq2ws6qMAAABHx8MAAABAQAAAAAAAAUCDa6yv65gGX+tqLyqoq9YLHq6s79mAAYAAAAAAAAAAAQAnP///////trj6f3p4Onu////////IgEBAAAAAAAAAAIExf//////////////////////////SgACAAAAAAAAAAABAoL////////rzVKK6/H//////9wvAAEAAAAAAAAAAAAAAAAkOjQ1Gg4AAAAAAAQUKTY0OwAAAQAAAAAAAAAAAAAAAAQAAAAAAAAAAgQEAQAAAAAAAAACAAAAAAAA')
-];
-const holes=[
-  embeddedSticker('원형 구멍',13,13,'AAAAAAAA/wAAAAAAAAAAAP////////8AAAAAAP///////////wAAAP//////////////AAD//////////////wAA//////////////8A/////////////////wD//////////////wAA//////////////8AAP//////////////AAAA////////////AAAAAAD/////////AAAAAAAAAAAA/wAAAAAAAA=='),
-  embeddedSticker('하트 구멍',15,13,'AP////////////////8A////////////////////////////////////////////////////////////////////////////////////////////////////AP////////////////8AAP////////////////8AAAD//////////////wAAAAD//////////////wAAAAAA////////////AAAAAAAAAP////////8AAAAAAAAAAAAA////AAAAAAAA'),
-  embeddedSticker('사각 구멍',12,9,'////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////')
-];
-function activeStamp(){return armed<0?null:(armedMode==='sub'?stickers[armed]:holes[armed]);}
-function refreshStage(){drawDensity($('stageImage'),work,N,N);$('stageDimensions').textContent=`${N} × ${N} = ${N*N.toLocaleString('ko-KR')} 픽셀`;$('stageImageWrap').hidden=view!=='image';$('numberScroll').hidden=view!=='matrix';$('stageMatrixTools').hidden=view!=='matrix';$('stageImageWrap').classList.toggle('placing',armed!==-1&&armedMode==='add');$('stageImageWrap').classList.toggle('erasing',armed!==-1&&armedMode==='sub');$('stageCoordinate').textContent=`현재 사진의 원소 (${Math.floor(stageSelected/N)+1}, ${stageSelected%N+1})`;$('stageValue').value=work[stageSelected];$('stageSlider').value=work[stageSelected];$('undoBtn').disabled=history.length===0;requestAnimationFrame(()=>{if(view==='image')drawOverlay($('stageOverlay'),$('stageImage'),N,N,stageSelected,showGrid,hover);else drawStageNumbers();});}
-function getMatrixCellSize(){if(!matrixFit)return matrixCellSize;const sc=$('numberScroll');return Math.max(4,Math.floor(Math.min(sc.clientWidth-3,sc.clientHeight-3)/(N+1)));}
-function drawStageNumbers(){
- if(view!=='matrix')return;
- const cell=getMatrixCellSize(),cn=$('stageNumbers'),dim=(N+1)*cell,scroll=$('numberScroll');actualMatrixCellSize=cell;
- cn.width=dim;cn.height=dim;cn.style.width=dim+'px';cn.style.height=dim+'px';
- $('stageMatrixZoom').value=Math.max(6,Math.min(38,cell));
- const visibleCols=Math.min(N,Math.max(1,Math.floor(scroll.clientWidth/cell)-1));
- $('stageMatrixZoomValue').textContent=matrixFit?`전체 ${N}×${N}칸`:`${cell}px · 가로 약 ${visibleCols}칸`;
- const ctx=cn.getContext('2d'),font=Math.min(15,cell*.53),axisFont=Math.min(12,cell*.48),inset=Math.min(1,cell*.06);
- ctx.fillStyle='#edf1f8';ctx.fillRect(0,0,dim,dim);ctx.textAlign='center';ctx.textBaseline='middle';
- ctx.fillStyle='#475774';ctx.font=`650 ${axisFont}px system-ui,sans-serif`;
- for(let j=0;j<N;j++)ctx.fillText(j+1,(j+1.5)*cell,cell*.5);
- for(let i=0;i<N;i++)ctx.fillText(i+1,cell*.5,(i+1.5)*cell);
- ctx.font=`650 ${font}px system-ui,sans-serif`;
- for(let r=0;r<N;r++)for(let c=0;c<N;c++){
-  const idx=r*N+c,v=work[idx],x=(c+1)*cell,y=(r+1)*cell,g=v;
-  ctx.fillStyle=`rgb(${g},${g},${g})`;ctx.fillRect(x+inset,y+inset,cell-2*inset,cell-2*inset);
-  ctx.fillStyle=v<128?'#fff':'#192942';ctx.fillText(v,x+cell/2,y+cell/2);
-  if(idx===stageSelected){ctx.strokeStyle='#ee8b31';ctx.lineWidth=Math.max(1,Math.min(2.5,cell*.17));ctx.strokeRect(x+.5,y+.5,cell-1,cell-1);}
-  else if(armed!==-1&&hover&&r>=hover.r&&c>=hover.c&&r<hover.r+activeStamp().h&&c<hover.c+activeStamp().w){ctx.strokeStyle=armedMode==='sub'?'#087f86':'#3156d4';ctx.lineWidth=Math.max(.7,cell*.1);ctx.strokeRect(x+.5,y+.5,cell-1,cell-1);}
+function factorToPosition(factor){
+  const v=Math.max(0,Math.min(255,Number(factor)));
+  if(v<=1)return 50*(1-Math.cbrt(1-v));
+  return 50+50*Math.pow(Math.log(v)/Math.log(255),1/5);
+}
+function displayFactor(v){
+  if(v===0||v===1||v===255)return v.toFixed(2);
+  if(v<10)return v.toFixed(3);
+  if(v<100)return v.toFixed(2);
+  return v.toFixed(1);
+}
+// Numeric input and slider share one underlying multiplier. Allow fractional values.
+const normalizeFactor=(v)=>Math.min(255,Math.max(0,Number(v)));
+function updateNumericText(input,v){
+  input.value=displayFactor(v);
+}
+function attachNumberInput(input,getFactor,setFactor){
+  const apply=()=>{
+    if(input.value.trim()===''||input.validity.badInput)return;
+    const parsed=Number(input.value);
+    if(!Number.isFinite(parsed)||parsed<0||parsed>255)return;
+    setFactor(parsed);
+  };
+  input.addEventListener('input',apply);
+  const commit=()=>{
+    const parsed=Number(input.value);
+    if(input.value.trim()!==''&&Number.isFinite(parsed))setFactor(normalizeFactor(parsed));
+    updateNumericText(input,getFactor());
+  };
+  input.addEventListener('change',commit);
+  input.addEventListener('blur',commit);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')input.blur();});
+}
+const A40=[248,248,248,249,249,250,250,251,251,251,252,252,252,253,253,253,253,253,253,253,253,253,253,253,253,253,252,252,252,251,251,251,250,250,250,249,249,248,248,247,247,248,248,248,249,249,250,250,251,251,251,252,252,252,252,252,253,253,253,253,253,253,253,253,252,252,252,252,251,251,251,250,250,249,249,249,248,248,247,247,246,247,247,248,248,249,249,250,250,250,251,251,251,252,252,251,250,249,249,249,249,249,249,250,251,252,251,251,251,250,250,250,249,249,248,248,248,247,247,246,246,246,247,247,248,248,249,249,249,250,250,250,251,250,248,252,255,255,255,255,255,255,255,255,251,248,250,251,250,250,249,249,249,248,248,247,247,246,246,246,245,246,246,247,247,247,248,248,249,249,249,249,247,255,255,248,210,172,145,131,133,150,179,218,253,255,252,247,249,249,249,248,248,248,247,247,246,246,245,245,244,245,245,246,246,247,247,248,248,248,248,248,255,225,139,70,38,28,27,27,27,27,29,42,81,157,239,255,246,248,248,248,247,247,246,246,246,245,245,244,244,244,245,245,245,246,246,247,247,246,249,253,151,48,27,36,43,46,46,46,46,46,45,42,34,27,62,179,255,246,247,247,246,246,246,245,245,244,244,243,243,243,244,244,245,245,245,246,245,248,246,106,24,41,47,45,43,43,43,43,43,43,43,43,45,47,38,28,141,255,245,246,246,245,245,244,244,243,243,242,242,242,243,243,244,244,245,245,245,251,107,25,47,43,43,43,43,43,43,43,43,43,43,43,43,43,45,46,25,148,255,243,245,244,244,243,243,243,242,242,241,242,242,242,243,243,244,241,255,162,25,48,42,42,43,43,43,43,43,43,43,43,43,42,43,43,43,44,44,34,201,252,242,243,243,243,242,242,241,241,240,241,241,241,242,242,242,245,239,66,38,45,42,42,43,43,44,44,44,44,44,43,43,42,43,44,43,43,46,30,102,252,241,242,242,242,241,241,240,240,239,240,240,241,241,241,239,253,190,32,44,39,40,42,43,42,41,41,41,41,41,41,41,41,41,41,42,42,43,41,50,224,247,240,241,241,240,240,239,239,238,239,239,240,240,241,238,255,162,34,49,55,50,40,42,46,44,45,46,46,46,46,45,44,44,45,47,47,44,42,40,201,250,239,240,240,239,239,238,238,237,238,238,239,239,239,240,242,232,210,134,106,175,170,184,199,196,194,187,185,185,186,194,196,196,196,189,184,62,74,213,236,241,239,239,239,238,238,237,237,236,237,237,238,238,239,239,238,243,243,132,40,185,207,161,143,144,166,203,209,209,206,167,139,136,155,196,222,108,61,240,243,238,239,238,238,237,237,236,236,235,236,236,237,237,238,238,239,236,247,90,83,218,151,141,160,159,137,166,207,207,177,135,166,169,143,151,218,153,35,200,246,237,238,237,237,236,236,235,235,234,235,235,236,236,237,237,236,242,231,55,125,216,205,215,220,219,214,207,204,204,206,213,217,220,214,206,210,176,36,177,251,234,237,236,236,236,235,235,234,234,234,235,235,235,236,236,237,235,168,42,147,214,201,204,162,174,207,202,204,204,203,205,178,160,205,202,210,181,41,133,237,237,235,236,235,235,234,234,233,233,233,234,234,235,235,235,239,196,151,45,147,214,203,202,46,109,218,201,204,204,202,215,93,58,211,201,211,172,41,127,195,237,234,235,234,234,233,233,232,232,232,233,233,234,234,235,232,176,165,51,126,216,201,206,178,194,206,204,204,204,203,207,186,184,207,201,214,147,39,148,176,228,236,234,233,233,233,232,232,231,232,232,233,233,233,235,230,172,174,72,87,213,203,202,210,207,203,204,206,204,204,203,208,210,203,201,215,101,52,164,172,226,235,233,233,232,232,231,231,230,231,231,232,232,233,233,236,180,174,115,44,185,202,191,192,200,204,204,196,206,204,204,203,199,192,195,188,52,90,172,177,234,233,232,232,232,231,231,230,230,230,231,231,232,232,232,236,215,168,153,41,99,202,189,191,204,203,209,169,165,206,203,210,199,188,198,158,44,138,168,211,236,231,232,231,231,230,230,230,229,230,230,231,231,232,232,232,236,214,194,120,151,207,198,197,177,209,203,196,185,203,211,177,189,202,201,188,137,182,214,236,232,232,231,231,230,230,229,229,229,229,230,230,231,231,231,232,231,235,241,209,197,208,203,209,123,172,219,213,215,216,193,114,197,207,205,205,193,237,236,231,232,231,231,230,230,229,229,228,228,229,229,230,230,231,231,231,232,231,232,233,184,199,206,206,196,123,142,168,169,150,118,181,210,202,208,180,218,235,231,232,231,231,230,230,229,229,228,228,228,228,229,229,230,230,231,231,231,232,230,232,224,179,201,206,206,207,167,146,144,160,200,209,203,208,181,206,236,230,232,231,231,230,230,229,229,229,228,228,228,228,229,229,229,230,230,229,228,230,237,241,251,228,181,194,208,206,212,214,213,213,206,207,202,180,207,242,239,233,228,229,230,230,230,229,229,228,228,227,227,228,228,229,229,227,229,237,244,237,214,181,133,159,223,183,173,195,202,204,204,203,199,182,178,213,231,195,196,227,243,242,232,227,228,229,228,228,227,227,227,228,228,226,229,240,237,200,144,94,63,48,136,218,229,204,162,163,165,169,170,167,164,159,199,229,226,208,71,71,118,172,223,243,235,226,227,228,227,227,227,226,226,239,230,169,96,55,51,65,79,82,144,227,230,200,170,175,172,170,170,171,175,170,197,230,225,128,78,73,57,50,71,131,205,241,232,225,227,227,224,231,237,173,82,49,63,82,89,88,86,85,72,115,219,224,170,169,171,171,171,171,169,169,219,224,119,74,86,87,89,87,73,53,57,124,215,239,225,226,237,216,107,47,66,87,88,85,84,84,84,84,87,75,101,209,220,180,178,178,178,178,180,213,225,115,74,87,84,84,83,84,87,89,79,52,64,166,238,226,191,72,53,86,88,84,83,84,84,84,84,84,84,87,79,90,196,236,220,222,223,220,228,225,115,76,87,84,84,84,84,84,84,84,86,89,73,44,130,233,57,65,90,85,83,84,84,84,84,84,84,84,85,81,80,81,82,178,235,224,222,228,222,115,75,82,84,84,84,84,84,84,84,84,84,83,87,84,47,109,72,88,84,84,84,84,84,84,84,84,84,84,86,70,70,88,82,77,161,228,230,217,111,75,89,66,75,86,84,84,84,84,84,84,84,84,83,86,84,53,86,84,84,84,84,84,84,84,84,84,84,84,83,64,82,84,85,85,73,112,209,110,74,87,85,79,64,85,84,84,84,84,84,84,84,84,84,84,85,82,84,84,84,84,84,84,84,84,84,84,84,86,74,68,86,84,84,86,79,85,110,75,87,84,84,86,67,74,86,84,84,84,84,84,84,84,84,84,84,85,84,84,84,84,84,84,84,84,84,84,84,85,64,80,85,84,84,86,76,101,116,79,85,84,84,85,81,63,83,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,83,76,84,84,84,84,85,83,66,79,85,84,84,84,84,85,76,82,84,84,84,84,84,84,84,84,84,84,84];
+// Page 3: C is an image-valued matrix. A remains immutable.
+const C40=new Uint16Array(N); // C=0 leaves A unchanged; positive C darkens A by subtraction.
+const byId=id=>document.getElementById(id);
+const clip=v=>Math.max(0,Math.min(255,Math.round(v)));
+const get3=()=>A3.map((v,i)=>clip(v*FACTOR3[i]));
+const get40=()=>A40.map((v,i)=>clip(v-C40[i]));
+const pxCells=(container,values)=>{container.replaceChildren();values.forEach(v=>{const d=document.createElement('div');d.style.backgroundColor=`rgb(${v},${v},${v})`;container.append(d);});};
+const nums3=(container,values,old)=>{container.replaceChildren();values.forEach((v,i)=>{const d=document.createElement('div');d.className='number-cell'+(old && v!==old[i]?' changed':'');d.textContent=v;container.append(d);});};
+function refresh1(){pxCells(byId('pix1a'),A3);nums3(byId('num1a'),A3);const out=get3();pxCells(byId('pix1c'),out);nums3(byId('num1c'),out,A3);}
+FACTOR3.forEach((v,i)=>{
+  const cell=document.createElement('div');cell.className='scalar-cell';
+  const output=document.createElement('input');output.className='scalar-number';
+  output.type='number';output.min='0';output.max='255';output.step='any';output.inputMode='decimal';output.value='1.00';
+  output.setAttribute('aria-label',`${Math.floor(i/3)+1}행 ${i%3+1}열 배율 직접 입력`);
+  const inp=document.createElement('input');inp.className='mini-range';
+  inp.type='range';inp.min='0';inp.max='100';inp.step='0.001';inp.value='50';
+  inp.setAttribute('aria-label',`${Math.floor(i/3)+1}행 ${i%3+1}열 배율 슬라이더`);
+  const setFactor=(value)=>{FACTOR3[i]=value;inp.value=String(factorToPosition(value));refresh1();};
+  attachNumberInput(output,()=>FACTOR3[i],setFactor);
+  inp.addEventListener('input',()=>{FACTOR3[i]=positionToFactor(inp.value);updateNumericText(output,FACTOR3[i]);refresh1();});
+  cell.append(output,inp);byId('factors1').append(cell);
+});refresh1();
+const scratch=document.createElement('canvas');scratch.width=W;scratch.height=W;
+function drawImage40(canvas,vals){
+ const ctx=canvas.getContext('2d');const pixels=ctx.createImageData(W,W);
+ for(let i=0;i<N;i++){const v=clip(vals[i]),p=i*4;pixels.data[p]=pixels.data[p+1]=pixels.data[p+2]=v;pixels.data[p+3]=255;}
+ scratch.getContext('2d').putImageData(pixels,0,0);
+ ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(scratch,0,0,canvas.width,canvas.height);
+}
+function drawNumeric(canvas,kind,vals){
+ const ctx=canvas.getContext('2d'),sx=canvas.width/W,sy=canvas.height/W;
+ ctx.clearRect(0,0,canvas.width,canvas.height);ctx.textAlign='center';ctx.textBaseline='middle';
+ ctx.font=`570 ${Math.min(sx*.50,11.7)}px system-ui,sans-serif`;
+ for(let i=0;i<N;i++){
+   const x=(i%W)*sx,y=Math.floor(i/W)*sy,val=clip(vals[i]);
+   ctx.fillStyle=kind==='b'?(val>0?'#eaf0ff':'#f4f6fa'):'#f7f9fe';ctx.fillRect(x,y,sx+.1,sy+.1);
+   ctx.fillStyle=kind==='b'&&val>0?'#2854b8':'#36465e';ctx.fillText(String(val),x+sx/2,y+sy*.52);
+ }
+ ctx.beginPath();ctx.strokeStyle='#d8e1ed';ctx.lineWidth=Math.max(.35,sx*.024);
+ for(let j=0;j<=W;j++){let x=j*sx,y=j*sy;ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);}ctx.stroke();
+}
+function render2(){
+ drawImage40(byId('portrait'),A40);drawNumeric(byId('num2a'),'a',A40);
+ drawImage40(byId('cPicture'),C40);drawNumeric(byId('num2b'),'b',C40);
+ const output=get40();drawImage40(byId('result2'),output);drawNumeric(byId('num2c'),'c',output);
+ if(!byId('zoomModal').hidden && ['a','b','c'].includes(zoomKind))renderZoom();
+}
+let pending=false;
+function scheduleRender(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;render2();});}
+function showPage(n){
+ for(const x of [1,2,3]){byId('page'+x).classList.toggle('active',n===x);byId('nav'+x).classList.toggle('active',n===x);}
+ window.scrollTo(0,0);
+ if(n===2)requestSheetRender();if(n===3){updatePortableStickers();scheduleRender();}else if(typeof clearStampPreview==='function')clearStampPreview();
+}
+let unlocked=false;try{unlocked=sessionStorage.getItem('hadamard-7737-unlocked')==='yes';}catch{}
+let requestedPage=2;
+byId('nav1').addEventListener('click',()=>showPage(1));
+function protectedPage(n){if(unlocked){showPage(n);return;}requestedPage=n;byId('passwordInput').value='';byId('passwordError').textContent='';byId('passwordModal').hidden=false;byId('passwordInput').focus();}
+byId('nav2').addEventListener('click',()=>protectedPage(2));
+byId('nav3').addEventListener('click',()=>protectedPage(3));
+byId('toPage3').addEventListener('click',()=>protectedPage(3));
+byId('closePassword').addEventListener('click',()=>{byId('passwordModal').hidden=true;});
+byId('passwordModal').addEventListener('click',e=>{if(e.target===byId('passwordModal'))byId('passwordModal').hidden=true;});
+byId('passwordForm').addEventListener('submit',e=>{e.preventDefault();if(byId('passwordInput').value==='7737'){unlocked=true;try{sessionStorage.setItem('hadamard-7737-unlocked','yes');}catch{}byId('passwordModal').hidden=true;showPage(requestedPage);}else{byId('passwordError').textContent='비밀번호가 일치하지 않습니다.';byId('passwordInput').select();}});
+let zoomKind='a';const zoomModal=byId('zoomModal');
+function renderZoom(){
+ const cv=byId('zoomCanvas');
+ if(zoomKind==='sa'||zoomKind==='sb'||zoomKind==='sc'){
+    cv.width=1536;cv.height=2048;
+    cv.style.width='1152px';cv.style.height='1536px';
+    drawSheetNumeric(cv,zoomKind==='sb'?'b':'a',zoomKind==='sa'?SHEET_A:zoomKind==='sb'?SHEET_B:savedSheetResult());return;
+ }
+ cv.width=1200;cv.height=1200;cv.style.width='1200px';cv.style.height='1200px';
+ if(zoomKind==='a')drawNumeric(cv,'a',A40);else if(zoomKind==='b')drawNumeric(cv,'b',C40);else drawNumeric(cv,'c',get40());
+}
+document.querySelectorAll('.zoom').forEach(b=>b.addEventListener('click',()=>{zoomKind=b.dataset.zoom;byId('zoomTitle').textContent=zoomKind==='sa'?'A':zoomKind==='sb'?'B':zoomKind==='sc'?'A ⊙ B (검정 마스크 결과)':zoomKind==='a'?'A':zoomKind==='b'?'C':'A − C';zoomModal.hidden=false;renderZoom();}));
+byId('closeZoom').addEventListener('click',()=>zoomModal.hidden=true);
+zoomModal.addEventListener('click',e=>{if(e.target===zoomModal)zoomModal.hidden=true;});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){zoomModal.hidden=true;byId('passwordModal').hidden=true;}});
+
+// ------------------ PAGE 2: ERASE ACCESSORIES, EXTRACT UP TO TWO ------------------
+const SW=96,SH=128,SN=SW*SH;
+const STICKERS=[{"id":"cute_0","name":"리본","box":[0,0,32,32]},{"id":"cute_1","name":"별","box":[32,0,64,32]},{"id":"cute_2","name":"꽃","box":[64,0,96,32]},{"id":"cute_3","name":"선글라스","box":[0,32,32,64]},{"id":"cute_4","name":"하트","box":[32,32,64,64]},{"id":"cute_5","name":"왕관","box":[64,32,96,64]},{"id":"cute_6","name":"토끼귀","box":[0,64,32,96]},{"id":"cute_7","name":"체리","box":[32,64,64,96]},{"id":"cute_8","name":"구름","box":[64,64,96,96]},{"id":"cute_9","name":"고양이귀","box":[0,96,32,128]},{"id":"cute_10","name":"초승달","box":[32,96,64,128]},{"id":"cute_11","name":"파티모자","box":[64,96,96,128]}];
+const SHEET_A=new Uint8Array(SN).fill(255);
+const SHEET_B=new Float32Array(SN).fill(1);
+const sheetMarked=new Uint8Array(SN);
+const SHEET_RGB='data:image/png;base64,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';
+let sheetMode='paint',sheetBrush=7,sheetPainting=false,sheetLast=null,rectAnchor=null;
+let collectedStickers=[],placedSticker=null,stickerSnapshots=[];
+const originalPortrait=A40.slice();
+const d96=(x,y)=>y*SW+x;
+// Actual entrywise Hadamard product: (A odot B)[i] = A[i] * B[i].
+// B is a multiplier between 0 and 255, defaulting to 1.
+// B=0 makes the page-2 result black; those pixels are excluded from extracted stickers.
+function savedSheetResult(){
+ const out=new Uint8Array(SN);
+ for(let i=0;i<SN;i++)out[i]=clip(SHEET_A[i]*SHEET_B[i]);
+ return out;
+}
+function refreshSheetReady(){
+ const picture=new Image();
+ picture.onload=()=>{
+   const canvas=document.createElement('canvas');canvas.width=SW;canvas.height=SH;
+   const c=canvas.getContext('2d',{willReadFrequently:true});c.drawImage(picture,0,0,SW,SH);
+   const pixels=c.getImageData(0,0,SW,SH).data;
+   for(let i=0;i<SN;i++)SHEET_A[i]=Math.max(1,pixels[4*i]);
+   requestSheetRender();
+ };
+ picture.src=SHEET_RGB;
+}
+function sheetPoint(e){
+ const b=byId('sheetOriginal').getBoundingClientRect();
+ return {x:Math.max(0,Math.min(SW-1,Math.floor((e.clientX-b.left)/b.width*SW))),
+         y:Math.max(0,Math.min(SH-1,Math.floor((e.clientY-b.top)/b.height*SH)))};
+}
+const offscreenSheet=document.createElement('canvas');offscreenSheet.width=SW;offscreenSheet.height=SH;
+function drawSheetImage(canvas,values,overlay){
+ const ctx=canvas.getContext('2d');const bg=offscreenSheet.getContext('2d');const pixels=bg.createImageData(SW,SH);
+ for(let i=0;i<SN;i++){
+   const v=values[i],p=i*4;pixels.data[p]=pixels.data[p+1]=pixels.data[p+2]=v;pixels.data[p+3]=255;
+ }
+ bg.putImageData(pixels,0,0);
+ ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(offscreenSheet,0,0,canvas.width,canvas.height);
+ if(overlay){
+   const sx=canvas.width/SW,sy=canvas.height/SH;
+   ctx.fillStyle='rgba(51,110,235,.34)';
+   for(let i=0;i<SN;i++)if(sheetMarked[i])ctx.fillRect((i%SW)*sx,Math.floor(i/SW)*sy,sx+.1,sy+.1);
  }
 }
-function pickFromImage(event){const rect=$('stageImage').getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)return null;return {c:bound(Math.floor((event.clientX-rect.left)/rect.width*N),0,N-1),r:bound(Math.floor((event.clientY-rect.top)/rect.height*N),0,N-1)};}
-function pickFromNumbers(event){const rect=$('stageNumbers').getBoundingClientRect(),cell=actualMatrixCellSize;if(event.clientX<rect.left+cell||event.clientX>rect.right||event.clientY<rect.top+cell||event.clientY>rect.bottom)return null;const c=Math.floor((event.clientX-rect.left)/cell)-1,r=Math.floor((event.clientY-rect.top)/cell)-1;return r>=0&&r<N&&c>=0&&c<N?{r,c}:null;}
-function locateStage(event){return view==='image'?pickFromImage(event):pickFromNumbers(event);}
-function setHover(pos){hover=pos&&armed!==-1?{r:pos.r,c:pos.c,sticker:activeStamp(),mode:armedMode}:null;requestAnimationFrame(()=>{if(view==='image')drawOverlay($('stageOverlay'),$('stageImage'),N,N,stageSelected,showGrid,hover);else drawStageNumbers();});}
-function selectStage(r,c){stageSelected=r*N+c;refreshStage();}
-function storeSnapshot(copy=work.slice()){history.push({work:copy,lastOperation,lastSubtraction});if(history.length>45)history.shift();$('undoBtn').disabled=false;}
-function changeStageAt(r,c,newVal){const pos=r*N+c,v=clamp(newVal);if(work[pos]===v)return;storeSnapshot();work[pos]=v;stageSelected=pos;refreshStage();if(lastOperation&&!lastSubtraction)renderSubtraction();}
-function status(s){$('stageStatus').textContent=s;}
-function armSticker(i,mode='add'){
- armed=i;armedMode=mode;
- $$('.stickerPick').forEach(b=>b.classList.toggle('selected',i!==-1&&+b.dataset.idx===i&&b.dataset.mode===mode));
- const selected=activeStamp();$('cancelStickerBtn').textContent=selected?'선택 해제 · '+selected.name:'스티커/도장 선택 해제';hover=null;refreshStage();
- if(selected)status(`${mode==='sub'?'뺄셈 장식':'덧셈 구멍'} ${selected.name} 선택됨. 사진에서 도장 왼쪽 위 칸의 위치를 지정하세요.`);
- else status('도장 선택이 해제되었습니다. 픽셀을 터치하여 수정할 수 있습니다.');
-}
-function placeSticker(r,c,index=armed){
- if(index<0||index>=stickers.length||r<0||c<0||r>=N||c>=N)return;
- const s=stickers[index],before=work.slice(),after=work.slice();let changed=0,underflow=0;
- for(let sy=0;sy<s.h;sy++)for(let sx=0;sx<s.w;sx++){
-  if(r+sy>=N||c+sx>=N)continue;
-  const val=s.values[sy*s.w+sx],k=(r+sy)*N+(c+sx),raw=before[k]-val;
-  if(raw<0)underflow++;
-  after[k]=Math.max(0,raw);
-  if(after[k]!==before[k])changed++;
- }
- storeSnapshot();work=after;
- lastOperation={r,c,w:Math.min(s.w,N-c),h:Math.min(s.h,N-r),sw:s.w,name:s.name,sticker:s.values.slice(),before,after:work.slice(),underflow,changed};
- const firstNonzero=s.values.findIndex(v=>v>0);
- opCell=firstNonzero>=0?{r:Math.min(Math.floor(firstNonzero/s.w),Math.min(s.h,N-r)-1),c:Math.min(firstNonzero%s.w,Math.min(s.w,N-c)-1)}:{r:0,c:0};
- stageSelected=r*N+c;armSticker(-1);renderOperation();renderSubtraction();refreshStage();
- status(`${s.name} 뺄셈 완료 · (${r+1}행, ${c+1}열)부터 빼기 · 실제로 어두워진 픽셀 ${changed}개${underflow?' · 0 아래 제한 '+underflow+'개':''}`);
-}
-function placeHole(r,c,index=armed){
- if(index<0||index>=holes.length||r<0||c<0||r>=N||c>=N)return;
- const stamp=holes[index],before=work.slice(),after=work.slice(),power=clamp($('holeStrength').value);
- const values=stamp.values.map(v=>Math.round(v*power/255));
- let overflow=0,changed=0;
- for(let sy=0;sy<stamp.h;sy++)for(let sx=0;sx<stamp.w;sx++){
-  if(r+sy>=N||c+sx>=N)continue;
-  const k=(r+sy)*N+c+sx,b=values[sy*stamp.w+sx],raw=before[k]+b;
-  if(raw>255)overflow++;
-  after[k]=Math.min(255,raw);
-  if(after[k]!==before[k])changed++;
- }
- storeSnapshot();work=after;
- lastSubtraction={r,c,w:Math.min(stamp.w,N-c),h:Math.min(stamp.h,N-r),sw:stamp.w,name:stamp.name,sticker:values,before,after:after.slice(),overflow,changed,power};
- const firstNonzero=values.findIndex(v=>v>0);
- subCell=firstNonzero>=0?{r:Math.min(Math.floor(firstNonzero/stamp.w),Math.min(stamp.h,N-r)-1),c:Math.min(firstNonzero%stamp.w,Math.min(stamp.w,N-c)-1)}:{r:0,c:0};
- stageSelected=r*N+c;armSticker(-1);renderOperation();renderSubtraction();refreshStage();
- status(`${stamp.name} 덧셈 완료 · (${r+1}행, ${c+1}열)부터 ${stamp.h}×${stamp.w} 행렬 더하기 · 실제로 밝아진 픽셀 ${changed}개 · 255 초과 제한 ${overflow}개`);
-}
-function stageTap(event){const point=locateStage(event);if(!point)return;if(armed!==-1){if(armedMode==='sub')placeSticker(point.r,point.c);else placeHole(point.r,point.c);}else selectStage(point.r,point.c);}
-$('stageImageWrap').addEventListener('pointerdown',e=>{if(e.button!==0)return;if(armed!==-1){$('stageImageWrap').setPointerCapture(e.pointerId);setHover(pickFromImage(e));}else stageTap(e);});$('stageImageWrap').addEventListener('pointermove',e=>{if(armed!==-1)setHover(pickFromImage(e));});$('stageImageWrap').addEventListener('pointerup',e=>{if(armed!==-1){stageTap(e);setHover(null);}});$('stageImageWrap').addEventListener('pointerleave',()=>{if(armed!==-1)setHover(null);});
-$('stageNumbers').addEventListener('click',stageTap);$('stageNumbers').addEventListener('pointermove',e=>{if(armed!==-1)setHover(pickFromNumbers(e));});$('numberScroll').addEventListener('pointerleave',()=>{if(armed!==-1)setHover(null);});
-let pendingSliderBefore=null;$('stageSlider').addEventListener('pointerdown',()=>{pendingSliderBefore=work.slice();});$('stageSlider').addEventListener('focus',()=>{if(!pendingSliderBefore)pendingSliderBefore=work.slice();});$('stageSlider').addEventListener('input',e=>{work[stageSelected]=clamp(e.target.value);$('stageValue').value=work[stageSelected];drawDensity($('stageImage'),work,N,N);if(view==='matrix')drawStageNumbers();});$('stageSlider').addEventListener('change',()=>{if(pendingSliderBefore&&!pendingSliderBefore.every((v,i)=>v===work[i]))storeSnapshot(pendingSliderBefore);pendingSliderBefore=null;refreshStage();if(lastOperation&&!lastSubtraction)renderSubtraction();});$('stageValue').addEventListener('change',e=>{changeStageAt(Math.floor(stageSelected/N),stageSelected%N,e.target.value);e.target.value=work[stageSelected];});
-$('holeStrength').addEventListener('input',e=>{$('holeStrengthValue').textContent=clamp(e.target.value);});
-$('undoBtn').addEventListener('click',()=>{const prev=history.pop();if(!prev)return;work=prev.work;lastOperation=prev.lastOperation;lastSubtraction=prev.lastSubtraction||null;armSticker(-1);refreshStage();renderOperation();renderSubtraction();status('직전 편집 또는 행렬 연산을 되돌렸습니다.');});$('resetBtn').addEventListener('click',()=>{if(!confirm('현재 편집을 모두 지우고 원래 사람 사진으로 되돌릴까요?'))return;work=base.slice();history=[];lastOperation=null;lastSubtraction=null;stageSelected=Math.floor(N/2)*N+Math.floor(N/2);armSticker(-1);refreshStage();renderOperation();renderSubtraction();status('원래 사진으로 되돌렸습니다.');});$('cancelStickerBtn').addEventListener('click',()=>armSticker(-1));
-segmentEvents('stageViews','stageView',v=>{view=v;setActive('#stageViews button','stageView',v);refreshStage();});
-$('stageMatrixZoom').addEventListener('input',e=>{matrixCellSize=+e.target.value;matrixFit=false;drawStageNumbers();});
-$('fitStageMatrix').addEventListener('click',()=>{matrixFit=true;$('numberScroll').scrollLeft=0;$('numberScroll').scrollTop=0;drawStageNumbers();});
-$('magnifyStageMatrix').addEventListener('click',()=>{matrixFit=false;matrixCellSize=32;drawStageNumbers();});
-$('gridToggle').addEventListener('change',e=>{showGrid=e.target.checked;refreshStage();});
-$('baseSize').addEventListener('change',()=>{N=+$('baseSize').value;base=baseImageSource?grayscaleCanvas(fillFitCanvas(baseImageSource,N,N,false)):baseDemo(N);work=base.slice();history=[];lastOperation=null;lastSubtraction=null;stageSelected=Math.floor(N/2)*N+Math.floor(N/2);armSticker(-1);renderOperation();renderSubtraction();});$('baseUpload').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{baseImageSource=await loadImageFile(f);base=grayscaleCanvas(fillFitCanvas(baseImageSource,N,N,false));work=base.slice();history=[];lastOperation=null;lastSubtraction=null;stageSelected=Math.floor(N/2)*N+Math.floor(N/2);$('baseName').textContent='현재: '+f.name;armSticker(-1);renderOperation();renderSubtraction();status('사진을 행렬로 변환했습니다. 이제 스티커를 추가해 보세요.');}catch(err){alert(err.message);}e.target.value='';});
-$('exportBtn').addEventListener('click',()=>{const c=document.createElement('canvas');c.width=N*10;c.height=N*10;const ctx=c.getContext('2d');ctx.imageSmoothingEnabled=false;ctx.drawImage($('stageImage'),0,0,c.width,c.height);c.toBlob(b=>{if(b)downloadBlob(b,'나의_행렬_이미지.png');},'image/png');});$('csvBtn').addEventListener('click',()=>{const rows=[['행\\열',...Array.from({length:N},(_,j)=>j+1)].join(',')];for(let r=0;r<N;r++)rows.push([r+1,...work.slice(r*N,(r+1)*N)].join(','));const text='\ufeff'+rows.join('\r\n');downloadBlob(new Blob([text],{type:'text/csv;charset=utf-8'}),'이미지_행렬_'+N+'x'+N+'.csv');});
-function renderPalette(){
- function paintPalette(target,items,mode){
-  const pal=$(target);pal.replaceChildren();
-  items.forEach((s,i)=>{
-   const div=document.createElement('div');div.className='sticker-card';
-   const pick=document.createElement('button');pick.type='button';pick.className='stickerPick';pick.dataset.idx=i;pick.dataset.mode=mode;
-   pick.setAttribute('aria-label',s.name+' 선택 후 사진에 드래그');
-   const cv=document.createElement('canvas');drawStampArtwork(cv,s.values,s.w,s.h);cv.setAttribute('aria-label',s.name+' 도장 모양 미리보기 (흰 배경과 검은 모양)');
-   const title=document.createElement('strong');title.textContent=s.name;
-   const sub=document.createElement('small');sub.textContent=`모양 미리보기 · ${s.h}×${s.w}`;
-   pick.append(cv,title,sub);
-   const actions=document.createElement('div');actions.className='sticker-actions';
-   const edit=document.createElement('button');edit.className='btn';edit.type='button';edit.textContent='연산 행렬 편집';
-   edit.addEventListener('click',()=>openStickerEditor(i,mode));actions.append(edit);
-   if(mode==='sub'){
-    const label=document.createElement('label');label.className='btn file-btn';label.textContent='사진 교체';
-    const upload=document.createElement('input');upload.type='file';upload.accept='image/*';upload.setAttribute('aria-label',s.name+' 사진 교체');
-    upload.addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{
-     const img=await loadImageFile(f),scale=Math.min(28/img.width,20/img.height),w=Math.max(2,Math.round(img.width*scale)),h=Math.max(2,Math.round(img.height*scale)),canvas=fillFitCanvas(img,w,h,true);
-     stickers[i]={name:s.name,w,h,values:grayscaleCanvas(canvas,true)};
-     renderPalette();if(stickerEditorIndex===i&&stickerEditorMode==='sub')openStickerEditor(i,'sub');armSticker(-1);status(`${s.name} 사진을 ${h}×${w} 행렬로 변환했습니다.`);
-    }catch(err){alert(err.message);}e.target.value='';});label.append(upload);actions.append(label);
+function drawSheetNumeric(canvas,kind,values){
+ const ctx=canvas.getContext('2d'),sx=canvas.width/SW,sy=canvas.height/SH;
+ ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle=kind==='b'?'#f6f7fb':'#fbfcff';ctx.fillRect(0,0,canvas.width,canvas.height);
+ const showText=kind==='b'||sx>=10;
+ if(showText){ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`${Math.max(kind==='b'?5.4:1,Math.min(sx*.59,12))}px system-ui,sans-serif`;}
+ for(let i=0;i<SN;i++){
+   const x=(i%SW)*sx,y=Math.floor(i/SW)*sy,v=values[i];
+   if(kind==='b' && (sheetMarked[i]||Math.abs(v-1)>.0001)){
+     ctx.fillStyle=sheetMarked[i]?'#dce8ff':(v===0?'#c7d2e4':'#edf1fc');ctx.fillRect(x,y,sx+.1,sy+.1);
    }
-   div.append(pick,actions);pal.append(div);
-   pick.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.preventDefault();pick.setPointerCapture(e.pointerId);drag={mode,index:i,startX:e.clientX,startY:e.clientY,moved:false};armSticker(i,mode);});
-   pick.addEventListener('pointermove',e=>{
-    if(!drag||drag.index!==i||drag.mode!==mode)return;
-    if(Math.hypot(e.clientX-drag.startX,e.clientY-drag.startY)>8)drag.moved=true;
-    if(drag.moved){const ghost=$('dragGhost');ghost.hidden=false;ghost.textContent=(mode==='sub'?'− ':'+ ')+s.name+' 옮기는 중';ghost.style.background=mode==='sub'?'#07868b':'#3156d4';ghost.style.left=e.clientX+'px';ghost.style.top=e.clientY+'px';setHover(locateStage(e));}
-   });
-   const end=e=>{if(!drag||drag.index!==i||drag.mode!==mode)return;const moved=drag.moved;drag=null;$('dragGhost').hidden=true;
-    const pos=locateStage(e);if(moved&&pos){if(mode==='sub')placeSticker(pos.r,pos.c,i);else placeHole(pos.r,pos.c,i);}else{setHover(null);status(s.name+' 선택됨. 사진 속 원하는 위치를 터치해 주세요.');}};
-   pick.addEventListener('pointerup',end);
-   pick.addEventListener('pointercancel',()=>{drag=null;$('dragGhost').hidden=true;setHover(null);});
-  });
+   if(showText){ctx.fillStyle=kind==='b'?'#3b568b':'#455671';ctx.fillText(kind==='b'?shortB(v):String(v),x+sx*.5,y+sy*.53);}
+   else if(kind!=='b'){const shade=214-Math.round((255-v)*.14);ctx.fillStyle=`rgb(${shade},${shade},${shade})`;ctx.fillRect(x+sx*.34,y+sy*.34,Math.max(.75,sx*.24),Math.max(.75,sy*.24));}
+   else if(Math.abs(v-1)>.001){ctx.fillStyle='#4566b7';ctx.fillRect(x+sx*.30,y+sy*.30,Math.max(.8,sx*.35),Math.max(.8,sy*.35));}
  }
- paintPalette('stickerPalette',stickers,'sub');paintPalette('holePalette',holes,'add');
+ ctx.beginPath();ctx.strokeStyle='#e1e6f0';ctx.lineWidth=.5;
+ for(let x=0;x<=SW;x++){let xx=x*sx;ctx.moveTo(xx,0);ctx.lineTo(xx,canvas.height);}
+ for(let y=0;y<=SH;y++){let yy=y*sy;ctx.moveTo(0,yy);ctx.lineTo(canvas.width,yy);}ctx.stroke();
 }
-// Sticker editing, with the same pixel-to-number mapping
-function openStickerEditor(i,mode='add'){stickerEditorMode=mode;$('stickerEditor').parentElement!==$(mode==='sub'?'stickerPalette':'holePalette').parentElement&&$(mode==='sub'?'stickerPalette':'holePalette').after($('stickerEditor'));stickerEditorIndex=i;stickerCellSelected=0;stickerEditView='source';$('stickerEditor').hidden=false;setActive('#stickerViews button','editView','source');armSticker(-1);renderStickerEditor();}
-function renderStickerEditor(){if(stickerEditorIndex<0)return;const s=(stickerEditorMode==='sub'?stickers:holes)[stickerEditorIndex];$('editorTitle').textContent=`${s.name} · ${s.h}×${s.w} 행렬 편집`; $('stickerNumbers').hidden=stickerEditView==='image';$('stickerImage').hidden=stickerEditView!=='image';const cv=$('stickerImage');drawDensity(cv,s.values,s.w,s.h);cv.style.aspectRatio=`${s.w}/${s.h}`;cv.style.width=Math.min(260,s.w*13)+'px';cv.style.height='auto';const cell=39,nc=$('stickerNumbers'),ctx=nc.getContext('2d');nc.width=s.w*cell;nc.height=s.h*cell;nc.style.width=nc.width+'px';nc.style.height=nc.height+'px';ctx.fillStyle='#e0e6ef';ctx.fillRect(0,0,nc.width,nc.height);ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='700 12px system-ui,sans-serif';s.values.forEach((raw,k)=>{const v=stickerEditView==='source'?255-raw:raw;const x=k%s.w*cell,y=Math.floor(k/s.w)*cell,g=v;ctx.fillStyle=`rgb(${g},${g},${g})`;ctx.fillRect(x+1,y+1,cell-2,cell-2);ctx.fillStyle=v<128?'white':'#233148';ctx.fillText(v,x+cell/2,y+cell/2);if(k===stickerCellSelected){ctx.strokeStyle='#f4933a';ctx.lineWidth=3;ctx.strokeRect(x+1.5,y+1.5,cell-3,cell-3);}});$('stickerCoord').textContent=`${stickerEditView==='source'?'S (원본)':stickerEditorMode==='sub'?'B (뺄셈량)':'D (덧셈량)'}의 원소 (${Math.floor(stickerCellSelected/s.w)+1}, ${stickerCellSelected%s.w+1})`;$('stickerValue').value=stickerEditView==='source'?255-s.values[stickerCellSelected]:s.values[stickerCellSelected];$('stickerSlider').value=$('stickerValue').value;}
-function selectStickerPixel(event,type){if(stickerEditorIndex<0)return;const s=(stickerEditorMode==='sub'?stickers:holes)[stickerEditorIndex];let r,c;const cv=type==='matrix'?$('stickerNumbers'):$('stickerImage'),rect=cv.getBoundingClientRect();if(type==='matrix'){c=Math.floor((event.clientX-rect.left)/39);r=Math.floor((event.clientY-rect.top)/39);}else{c=Math.floor((event.clientX-rect.left)/rect.width*s.w);r=Math.floor((event.clientY-rect.top)/rect.height*s.h);}if(r>=0&&r<s.h&&c>=0&&c<s.w){stickerCellSelected=r*s.w+c;renderStickerEditor();}}
-$('stickerNumbers').addEventListener('click',e=>selectStickerPixel(e,'matrix'));$('stickerImage').addEventListener('click',e=>selectStickerPixel(e,'image'));segmentEvents('stickerViews','editView',v=>{stickerEditView=v;setActive('#stickerViews button','editView',v);renderStickerEditor();});$('closeEditor').addEventListener('click',()=>{$('stickerEditor').hidden=true;stickerEditorIndex=-1;});function updateStickerPixel(v){if(stickerEditorIndex<0)return;const s=(stickerEditorMode==='sub'?stickers:holes)[stickerEditorIndex];s.values[stickerCellSelected]=stickerEditView==='source'?255-clamp(v):clamp(v);renderStickerEditor();renderPalette();}
-$('stickerValue').addEventListener('change',e=>updateStickerPixel(e.target.value));$('stickerSlider').addEventListener('input',e=>updateStickerPixel(e.target.value));
-function renderOperation(){const box=$('operationContent'),op=lastOperation;if(!op){box.className='empty-operation';box.innerHTML='스티커를 사진에 놓으면 이곳에 <strong>이전 행렬 − 스티커 행렬 = 결과 행렬</strong>이 나타납니다.';return;}box.className='';const rr=bound(opCell.r,0,op.h-1),cc=bound(opCell.c,0,op.w-1);opCell={r:rr,c:cc};const pos=(op.r+rr)*N+(op.c+cc),a=op.before[pos],b=op.sticker[rr*op.sw+cc],z=op.after[pos],sum=a-b;
-box.replaceChildren();const formula=document.createElement('div');formula.className='formula';formula.innerHTML=`선택 원소 (${op.r+rr+1}, ${op.c+cc+1}) : <span id="mathFormula"></span>`;const f=formula.querySelector('#mathFormula');f.textContent=`${a} − ${b} = ${sum}`;if(sum<0){const tag=document.createElement('span');tag.className='clip';tag.textContent=` → 그림에는 ${z}(검은색)로 표시`;formula.append(tag);}box.append(formula);const sub=document.createElement('p');sub.className='op-sub';sub.textContent=`${op.name} · 시작 위치 (${op.r+1}, ${op.c+1}) · 비교 중인 부분 ${op.h}행 × ${op.w}열 · 0 아래 제한 ${op.underflow}개 · 아래 세 행렬의 숫자를 누르면 해당 뺄셈을 볼 수 있습니다.`;box.append(sub);const grid=document.createElement('div');grid.className='matrices3';const defs=[['A','스티커를 붙이기 전', (r,c)=>op.before[(op.r+r)*N+op.c+c]],['B','빼는 변화량', (r,c)=>op.sticker[r*op.sw+c]],['A−B','뺄셈 후 화면 값', (r,c)=>op.after[(op.r+r)*N+op.c+c]]];for(let k=0;k<3;k++){const [symbol,title,get]=defs[k],card=document.createElement('div');card.className='matrix-small-card';const h=document.createElement('h3');h.className='matrix-small-title';h.innerHTML=`<span class="letter">${symbol}</span> · ${title}`;const scroll=document.createElement('div');scroll.className='mini-scroll';const matrix=document.createElement('div');matrix.className='mini-matrix';matrix.dataset.cols=op.w;matrix.style.gridTemplateColumns=`repeat(${op.w},var(--mini-cell))`;for(let r=0;r<op.h;r++)for(let c=0;c<op.w;c++){const v=get(r,c),cell=document.createElement('button');cell.className='mini-cell'+(r===rr&&c===cc?' highlight':'');cell.type='button';cell.textContent=v;cell.title=`${r+1}행 ${c+1}열 : ${v}`;cell.dataset.r=r;cell.dataset.c=c;const shade=v;cell.style.background=`rgb(${shade},${shade},${shade})`;cell.style.color=v<128?'white':'#203049';matrix.append(cell);}scroll.append(matrix);scroll.addEventListener('click',e=>{const target=e.target.closest('button.mini-cell');if(!target)return;opCell={r:+target.dataset.r,c:+target.dataset.c};renderOperation();renderSubtraction();});card.append(h,scroll);grid.append(card);}box.append(grid);requestAnimationFrame(resizeOperationCells);}
-// Addition stamps are placed freely: C + D = E (independent of sticker subtraction).
-function renderSubtraction(){
- const box=$('subtractionContent'),sub=lastSubtraction;
- if(!sub){box.className='empty-operation';box.innerHTML='구멍 도장을 사진에 놓으면 <strong>더하기 전 행렬 C + 도장 행렬 D = 결과 행렬 E</strong>가 나타납니다.';return;}
- const rr=bound(subCell.r,0,sub.h-1),cc=bound(subCell.c,0,sub.w-1),k=(sub.r+rr)*N+sub.c+cc;
- const c=sub.before[k],b=sub.sticker[rr*sub.sw+cc],raw=c+b,result=sub.after[k];
- box.className='';box.replaceChildren();
- const formula=document.createElement('div');formula.className='formula';formula.textContent=`선택 원소 (${sub.r+rr+1}, ${sub.c+cc+1}) : ${c} + ${b} = ${raw}`;
- if(raw>255){const badge=document.createElement('span');badge.className='clip';badge.textContent=` → 그림에는 ${result}(흰색)로 표시`;formula.append(badge);}box.append(formula);
- const desc=document.createElement('p');desc.className='op-sub';desc.textContent=`${sub.name} · 시작 위치 (${sub.r+1}, ${sub.c+1}) · ${sub.h}행 × ${sub.w}열 · 더하기 강도 ${sub.power} · 숫자를 누르면 해당 계산을 확인할 수 있습니다.`;box.append(desc);
- const grid=document.createElement('div');grid.className='matrices3';
- const defs=[['C','구멍 더하기 전',(r,c)=>sub.before[(sub.r+r)*N+sub.c+c]],['D','더하는 변화량',(r,c)=>sub.sticker[r*sub.sw+c]],['C+D','구멍 더한 후',(r,c)=>sub.after[(sub.r+r)*N+sub.c+c]]];
- for(const [symbol,title,get] of defs){
-  const card=document.createElement('div');card.className='matrix-small-card';const heading=document.createElement('h3');heading.className='matrix-small-title';const name=document.createElement('span');name.className='letter';name.textContent=symbol;heading.append(name,document.createTextNode(' · '+title));
-  const scroll=document.createElement('div');scroll.className='mini-scroll';const matrix=document.createElement('div');matrix.className='mini-matrix';matrix.dataset.cols=sub.w;matrix.style.gridTemplateColumns=`repeat(${sub.w},var(--mini-cell))`;
-  for(let r=0;r<sub.h;r++)for(let c=0;c<sub.w;c++){
-   const v=get(r,c),cell=document.createElement('button');cell.className='mini-cell'+(r===rr&&c===cc?' highlight':'');cell.type='button';cell.textContent=v;cell.title=`${r+1}행 ${c+1}열 : ${v}`;cell.dataset.r=r;cell.dataset.c=c;
-   const shade=v;cell.style.background=`rgb(${shade},${shade},${shade})`;cell.style.color=v<128?'white':'#203049';matrix.append(cell);
-  }
-  scroll.append(matrix);scroll.addEventListener('click',e=>{const target=e.target.closest('button.mini-cell');if(!target)return;subCell={r:+target.dataset.r,c:+target.dataset.c};renderSubtraction();});card.append(heading,scroll);grid.append(card);
+function shortB(v){
+ if(Math.abs(v-Math.round(v))<0.00005)return String(Math.round(v));
+ if(v<10)return String(Number(v.toFixed(2)));
+ if(v<100)return String(Number(v.toFixed(1)));
+ return String(Math.round(v));
+}
+// The complete numeric B grid is drawn above. This magnified 9x9 window
+// makes individual values legible on a tablet even though the full matrix
+// contains 12,288 entries.
+let sheetFocus={x:Math.floor(SW/2),y:Math.floor(SH/2)};
+function renderSheetBDetail(){
+ const view=byId('sheetBViewport');if(!view)return;
+ const left=Math.max(0,Math.min(SW-9,sheetFocus.x-4));
+ const top=Math.max(0,Math.min(SH-9,sheetFocus.y-4));
+ const frag=document.createDocumentFragment();
+ for(let y=top;y<top+9;y++)for(let x=left;x<left+9;x++){
+   const idx=d96(x,y),n=document.createElement('span');
+   n.className='bval'+(sheetMarked[idx]?' selected':Math.abs(SHEET_B[idx]-1)>.0001?' modified':'');
+   n.textContent=shortB(SHEET_B[idx]);n.title=`(${y+1}, ${x+1}) = ${shortB(SHEET_B[idx])}`;
+   frag.appendChild(n);
  }
- box.append(grid);
- const resultText=document.createElement('p');resultText.className='op-result';resultText.innerHTML=`<strong>실제로 밝아진 픽셀 ${sub.changed}개</strong> · 덧셈값이 255를 초과하여 흰색으로 제한된 픽셀 <strong>${sub.overflow}개</strong>. 구멍 도장을 다른 곳에 또 놓거나, 오른쪽에서 도장 원소를 고쳐 보세요.`;box.append(resultText);
- const preview=document.createElement('div');preview.className='subtract-preview';const cv=document.createElement('canvas');cv.setAttribute('aria-label','흰색 구멍을 더한 뒤 이미지');drawDensity(cv,sub.after,N,N);
- const content=document.createElement('div');content.className='copy';const title=document.createElement('strong');title.textContent='구멍 도장 덧셈 적용 완료';const p=document.createElement('p');p.textContent='이미 사진에 적용되어 있습니다. 다른 도장으로 연속해서 흰 부분을 만들 수 있으며 되돌리기로 직전 상태를 복구할 수 있습니다.';
- content.append(title,p);preview.append(cv,content);box.append(preview);
- requestAnimationFrame(resizeOperationCells);
+ view.replaceChildren(frag);
+ byId('sheetBFocusLabel').textContent=`${top+1}–${top+9}행 · ${left+1}–${left+9}열`;
 }
-function resizeOperationCells(){$$('.matrix-small-card .mini-scroll').forEach(scroll=>{const available=Math.max(40,scroll.clientWidth-3),cols=+(scroll.querySelector('.mini-matrix')?.dataset.cols||15),size=Math.max(8,Math.min(20,Math.floor(available/cols)-1));scroll.querySelector('.mini-matrix')?.style.setProperty('--mini-cell',size+'px');});}
-// prevent unexpected browser image drag
-$$('canvas').forEach(cv=>cv.addEventListener('dragstart',e=>e.preventDefault()));
-window.addEventListener('resize',()=>{if(page==='1')requestAnimationFrame(()=>drawOverlay($('labOverlay'),$('labImage'),labN,labN,labSelected,true));if(page==='2'){if(view==='image')requestAnimationFrame(()=>drawOverlay($('stageOverlay'),$('stageImage'),N,N,stageSelected,showGrid,hover));else if(matrixFit)requestAnimationFrame(drawStageNumbers);requestAnimationFrame(resizeOperationCells);}});
-labPreset();base=baseDemo(N);work=base.slice();renderPalette();refreshStage();renderOperation();renderSubtraction();
+function getExtracts(){
+ // The right-hand image is the TRUE Hadamard product (black when B=0).
+ // To export a sticker for page 3, treat B=0 as an excluded pixel rather
+ // than a dark drawing stroke; excluded pixels become white/transparent
+ // in the cropped sticker data used by the existing 3rd-page subtraction.
+ const saved=[];
+ for(let order=0;order<STICKERS.length;order++){
+   const s=STICKERS[order], [x0,y0,x1,y1]=s.box;
+   let inkBefore=0,inkKept=0,minX=x1,minY=y1,maxX=x0-1,maxY=y0-1;
+   for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++){
+     const i=d96(x,y),ink=255-SHEET_A[i];
+     inkBefore+=ink;
+     if(SHEET_B[i]>0){
+       const displayed=clip(SHEET_A[i]*SHEET_B[i]);
+       inkKept+=255-displayed;
+       if(displayed<241){
+         minX=Math.min(minX,x);minY=Math.min(minY,y);
+         maxX=Math.max(maxX,x);maxY=Math.max(maxY,y);
+       }
+     }
+   }
+   const retained=inkBefore?inkKept/inkBefore:0;
+   if(retained<.46||maxX<minX||maxY<minY)continue;
+   minX=Math.max(x0,minX-1);minY=Math.max(y0,minY-1);
+   maxX=Math.min(x1-1,maxX+1);maxY=Math.min(y1-1,maxY+1);
+   const w=maxX-minX+1,h=maxY-minY+1,vals=[];
+   for(let y=minY;y<=maxY;y++)for(let x=minX;x<=maxX;x++){
+     const i=d96(x,y);
+     vals.push(SHEET_B[i]===0?255:clip(SHEET_A[i]*SHEET_B[i]));
+   }
+   saved.push({id:s.id,name:s.name,w,h,vals,retained,order});
+ }
+ saved.sort((a,b)=>(b.retained-a.retained)||a.order-b.order);
+ return saved.slice(0,2);
+}
+function stickerThumb(sticker,canvas){
+ const ctx=canvas.getContext('2d');canvas.width=128;canvas.height=128;ctx.fillStyle='#fff';ctx.fillRect(0,0,128,128);
+ const temp=document.createElement('canvas');temp.width=sticker.w;temp.height=sticker.h;const tctx=temp.getContext('2d');
+ const pixels=tctx.createImageData(sticker.w,sticker.h);
+ for(let i=0;i<sticker.vals.length;i++){
+   const v=sticker.vals[i],p=4*i;pixels.data[p]=pixels.data[p+1]=pixels.data[p+2]=v;pixels.data[p+3]=255;
+ }
+ tctx.putImageData(pixels,0,0);ctx.imageSmoothingEnabled=false;
+ const scale=Math.min(112/sticker.w,112/sticker.h);const w=sticker.w*scale,h=sticker.h*scale;
+ ctx.drawImage(temp,(128-w)/2,(128-h)/2,w,h);
+}
+function updateSheetCards(){
+ collectedStickers=getExtracts();const host=byId('sheetSavedCards');host.replaceChildren();
+ byId('sheetSurvivorCount').textContent=`${collectedStickers.length} / 2`;
+ for(const item of collectedStickers){
+   const card=document.createElement('div');card.className='sticker-crop-card';
+   const cv=document.createElement('canvas');stickerThumb(item,cv);
+   const lab=document.createElement('div');lab.className='crop-label';lab.textContent=item.name;
+   const sub=document.createElement('span');sub.textContent=`${item.w} × ${item.h}`;lab.append(sub);
+   card.append(cv,lab);host.append(card);
+ }
+ if(!collectedStickers.length){const ph=document.createElement('div');ph.className='sticker-card-placeholder';ph.textContent='남아 있는 그림이 없습니다.';host.append(ph);}
+}
+function renderSheet(){
+ drawSheetImage(byId('sheetOriginal'),SHEET_A,true);
+ drawSheetNumeric(byId('sheetOriginalNums'),'a',SHEET_A);
+ drawSheetNumeric(byId('sheetMask'),'b',SHEET_B);renderSheetBDetail();
+ const C=savedSheetResult();drawSheetImage(byId('sheetResult'),C,false);
+ drawSheetNumeric(byId('sheetResultNums'),'c',C);updateSheetCards();
+ if(!zoomModal.hidden&&['sa','sb','sc'].includes(zoomKind))renderZoom();
+}
+let sheetScheduled=false;
+function requestSheetRender(){if(sheetScheduled)return;sheetScheduled=true;requestAnimationFrame(()=>{sheetScheduled=false;renderSheet();});}
+function markSheetCell(x,y){const r=(sheetBrush-1)/2;for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){
+ const xx=x+dx,yy=y+dy;if(xx>=0&&xx<SW&&yy>=0&&yy<SH)sheetMarked[d96(xx,yy)]=1;
+}}
+function markSheetLine(a,b){const n=Math.max(Math.abs(a.x-b.x),Math.abs(a.y-b.y),1);for(let t=0;t<=n;t++)markSheetCell(Math.round(a.x+(b.x-a.x)*t/n),Math.round(a.y+(b.y-a.y)*t/n));}
+function markSheetRectangle(a,b){sheetMarked.fill(0);for(let y=Math.min(a.y,b.y);y<=Math.max(a.y,b.y);y++)for(let x=Math.min(a.x,b.x);x<=Math.max(a.x,b.x);x++)sheetMarked[d96(x,y)]=1;}
+function sheetSelectionChanged(){
+ let count=0,first=null,uniform=true;
+ for(let i=0;i<SN;i++)if(sheetMarked[i]){
+   count++;
+   if(first===null)first=SHEET_B[i];
+   else if(first!==SHEET_B[i])uniform=false;
+ }
+ const slider=byId('sheetFactorSlider'),input=byId('sheetFactorInput');
+ slider.disabled=input.disabled=count===0;
+ const value=count&&uniform?first:1;
+ slider.value=String(factorToPosition(value));updateNumericText(input,value);
+ byId('sheetSelectedCount').textContent=count+'칸';requestSheetRender();
+}
+function setSheetMode(mode){sheetMode=mode;sheetMarked.fill(0);sheetSelectionChanged();
+ byId('editSticker').classList.toggle('active',mode==='paint');byId('rectSticker').classList.toggle('active',mode==='rect');}
+byId('editSticker').addEventListener('click',()=>setSheetMode('paint'));
+byId('rectSticker').addEventListener('click',()=>setSheetMode('rect'));
+document.querySelectorAll('[data-sheet-brush]').forEach(btn=>btn.addEventListener('click',()=>{
+ sheetBrush=Number(btn.dataset.sheetBrush);
+ document.querySelectorAll('[data-sheet-brush]').forEach(b=>b.classList.toggle('selected',b===btn));
+ setSheetMode('paint');
+}));
+const photoSheet=byId('sheetOriginal');
+photoSheet.addEventListener('pointerdown',e=>{
+ if(e.button!==undefined&&e.button!==0)return;e.preventDefault();sheetPainting=true;
+ sheetMarked.fill(0);sheetLast=sheetPoint(e);rectAnchor=sheetLast;sheetFocus=sheetLast;
+ markSheetCell(sheetLast.x,sheetLast.y);photoSheet.setPointerCapture(e.pointerId);sheetSelectionChanged();
+});
+photoSheet.addEventListener('pointermove',e=>{
+ if(!sheetPainting)return;e.preventDefault();const next=sheetPoint(e);
+ sheetFocus=next;if(sheetMode==='rect')markSheetRectangle(rectAnchor,next);else markSheetLine(sheetLast,next);
+ sheetLast=next;sheetSelectionChanged();
+});
+function stopSheetPainting(){sheetPainting=false;sheetLast=null;rectAnchor=null;}
+photoSheet.addEventListener('pointerup',stopSheetPainting);
+photoSheet.addEventListener('pointercancel',stopSheetPainting);
+photoSheet.addEventListener('lostpointercapture',stopSheetPainting);
+function applySheetFactor(value){
+ if(byId('sheetFactorSlider').disabled)return;
+ const factor=normalizeFactor(value);
+ for(let i=0;i<SN;i++)if(sheetMarked[i])SHEET_B[i]=factor;
+ byId('sheetFactorSlider').value=String(factorToPosition(factor));
+ requestSheetRender();
+}
+attachNumberInput(byId('sheetFactorInput'),()=>{
+ for(let i=0;i<SN;i++)if(sheetMarked[i])return SHEET_B[i];
+ return 1;
+},applySheetFactor);
+byId('sheetFactorSlider').addEventListener('input',()=>{
+ const factor=positionToFactor(byId('sheetFactorSlider').value);
+ updateNumericText(byId('sheetFactorInput'),factor);
+ applySheetFactor(factor);
+});
+byId('eraseSheetMarked').addEventListener('click',()=>{applySheetFactor(0);updateNumericText(byId('sheetFactorInput'),0);});
+byId('restorePicked').addEventListener('click',()=>{
+ for(let i=0;i<SN;i++)if(sheetMarked[i])SHEET_B[i]=1;
+ sheetSelectionChanged();requestSheetRender();
+});
+byId('clearPicked').addEventListener('click',()=>{
+ SHEET_B.fill(1);sheetMarked.fill(0);sheetSelectionChanged();requestSheetRender();
+});
+
+// ------------------ PAGE 3: SUBTRACT EXTRACTED STICKERS AND EDIT C ------------------
+let currentPortable=null, cHistory=[];
+function CPointFromClient(clientX,clientY){
+ const r=byId('cPicture').getBoundingClientRect();
+ if(clientX<r.left||clientX>r.right||clientY<r.top||clientY>r.bottom)return null;
+ return {x:Math.max(0,Math.min(W-1,Math.floor((clientX-r.left)/r.width*W))),
+         y:Math.max(0,Math.min(W-1,Math.floor((clientY-r.top)/r.height*W)))};
+}
+function updatePortableStickers(){
+ const host=byId('portableStickers');host.replaceChildren();const items=getExtracts();
+ if(currentPortable && !items.some(a=>a.id===currentPortable.id))currentPortable=null;
+ if(!items.length){const empty=document.createElement('span');empty.className='empty-stickers';empty.textContent='2페이지에서 장식을 남겨 주세요.';host.append(empty);return;}
+ for(const item of items){
+   const card=document.createElement('div');card.className='portable-card';card.tabIndex=0;
+   card.setAttribute('role','button');card.setAttribute('aria-label',item.name+' C에 추가하기');
+   card.classList.toggle('chosen',currentPortable?.id===item.id);
+   const row=document.createElement('div');row.className='mini-top';
+   const cv=document.createElement('canvas');stickerThumb(item,cv);
+   const lab=document.createElement('div');lab.innerHTML=`<strong>${item.name}</strong><span class="mini-desc">${item.w} × ${item.h} · C에 놓기</span>`;
+   row.append(cv,lab);card.append(row);
+   card.addEventListener('click',()=>{if(card.dataset.suppressClick==='yes'){card.dataset.suppressClick='';return;}selectPortable(item);});
+   card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectPortable(item);}});
+   connectDrag(card,item);host.append(card);
+ }
+}
+function selectPortable(item){
+ clearStampPreview();currentPortable=item;
+ byId('stickerPlacementHint').textContent=`${item.name}: C 위로 끌어 놓거나 C를 터치하세요.`;
+ document.querySelectorAll('.portable-card').forEach(card=>card.classList.toggle('chosen',card.getAttribute('aria-label')===item.name+' C에 추가하기'));
+}
+// Single source of truth for preview and committed placement; both use identical pixel arithmetic.
+function projectedStamp(item,point){
+ if(!item||!point)return null;
+ const scale=Math.min(1,17/item.w,17/item.h);
+ const sw=Math.max(1,Math.round(item.w*scale)),sh=Math.max(1,Math.round(item.h*scale));
+ const left=point.x-Math.floor(sw/2),top=point.y-Math.floor(sh/2);
+ const changes=[];
+ for(let dy=0;dy<sh;dy++)for(let dx=0;dx<sw;dx++){
+   const x=left+dx,y=top+dy;if(x<0||x>=W||y<0||y>=W)continue;
+   const ox=Math.min(item.w-1,Math.floor((dx+.5)/scale)),oy=Math.min(item.h-1,Math.floor((dy+.5)/scale));
+   const increment=clip(255-item.vals[oy*item.w+ox]);
+   if(increment>1)changes.push({index:y*W+x,increment});
+ }
+ return {changes,left:Math.max(0,left),top:Math.max(0,top),right:Math.min(W,left+sw),bottom:Math.min(W,top+sh)};
+}
+const stampPreviewCanvas=document.createElement('canvas');stampPreviewCanvas.width=W;stampPreviewCanvas.height=W;
+let previewStampKey='',previewStampActive=false;
+function clearStampPreview(){
+ if(!previewStampActive)return;
+ previewStampActive=false;previewStampKey='';
+ for(const id of ['cStampPreview','resultStampPreview']){
+   const cv=byId(id);cv.getContext('2d').clearRect(0,0,cv.width,cv.height);
+   cv.classList.remove('preview-active');
+ }
+ byId('previewResultLabel').hidden=true;
+ byId('cDropOutline').classList.remove('is-over');
+}
+function renderStampLayer(id,projection,isResult){
+ const canvas=byId(id),ctx=canvas.getContext('2d'),working=stampPreviewCanvas.getContext('2d');
+ const frame=working.createImageData(W,W);const data=frame.data;
+ for(const {index,increment} of projection.changes){
+   const nextC=Math.min(255,C40[index]+increment);
+   const val=isResult?Math.max(0,A40[index]-nextC):nextC;
+   const p=index*4;data[p]=data[p+1]=data[p+2]=val;data[p+3]=255;
+ }
+ working.putImageData(frame,0,0);
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ ctx.imageSmoothingEnabled=false;
+ ctx.globalAlpha=.88;
+ ctx.drawImage(stampPreviewCanvas,0,0,canvas.width,canvas.height);
+ ctx.globalAlpha=1;
+ const unit=canvas.width/W;
+ ctx.beginPath();ctx.setLineDash([7,4]);ctx.lineWidth=2.7;
+ ctx.strokeStyle=isResult?'#1479d8':'#9dcaff';
+ ctx.strokeRect(projection.left*unit+1.5,projection.top*unit+1.5,(projection.right-projection.left)*unit-3,(projection.bottom-projection.top)*unit-3);
+ ctx.setLineDash([]);
+ canvas.classList.add('preview-active');
+}
+function updateStampPreview(item,point){
+ if(!item||!point){clearStampPreview();return;}
+ const key=`${item.id}:${point.x}:${point.y}`;
+ if(previewStampActive&&key===previewStampKey)return;
+ const projected=projectedStamp(item,point);
+ if(!projected||!projected.changes.length){clearStampPreview();return;}
+ previewStampActive=true;previewStampKey=key;
+ renderStampLayer('cStampPreview',projected,false);
+ renderStampLayer('resultStampPreview',projected,true);
+ byId('previewResultLabel').hidden=false;
+ byId('cDropOutline').classList.add('is-over');
+ byId('stickerPlacementHint').textContent=`${item.name}: 오른쪽 A − C에 배치 미리보기 표시 중`;
+}
+function stampIntoC(item,point){
+ if(!item||!point)return;
+ const projection=projectedStamp(item,point);
+ if(!projection||!projection.changes.length)return;
+ cHistory.push(C40.slice());if(cHistory.length>25)cHistory.shift();
+ for(const {index,increment} of projection.changes)C40[index]=Math.min(255,C40[index]+increment);
+ clearStampPreview();scheduleRender();syncCEditor();
+ byId('stickerPlacementHint').textContent=`${item.name} → C 적용 완료 (A − C)`;
+}
+// Drag over C to select pixels; the value slider then edits all selected elements.
+const cTarget=byId('cPicture');
+let touchPlacement=null;
+const cMarked=new Uint8Array(N);
+let cBrush=1,cRectangle=false,cPainting=false,cAnchor=null,cLastPoint=null,cEditSnapshot=null;
+function showCSelection(){
+ // Identical grid coordinates on C and A-C: the selection stays synchronized
+ // during both freehand/rectangle dragging and subsequent slider editing.
+ const overlays=[byId('cSelectionOverlay'),byId('resultSelectionOverlay')];
+ const counts=cMarked.reduce((sum,v)=>sum+(v?1:0),0);
+ overlays.forEach((overlay,which)=>{
+   const ctx=overlay.getContext('2d'),unit=overlay.width/W;
+   ctx.clearRect(0,0,overlay.width,overlay.height);
+   if(!counts)return;
+   ctx.fillStyle=which?'rgba(255,175,57,0.25)':'rgba(61,116,241,0.31)';
+   ctx.strokeStyle=which?'rgba(229,108,26,0.96)':'rgba(92,153,255,0.95)';
+   ctx.lineWidth=1.3;
+   for(let i=0;i<N;i++)if(cMarked[i]){
+     const x=(i%W)*unit,y=Math.floor(i/W)*unit;
+     ctx.fillRect(x,y,unit,unit);
+     ctx.strokeRect(x+.75,y+.75,unit-1.5,unit-1.5);
+   }
+ });
+ const hint=byId('resultSelectionHint');
+ hint.hidden=!counts;
+ if(counts)hint.textContent=`C에서 선택한 ${counts}칸 · A − C 변경 영역`;
+}
+function syncCEditor(){
+ let count=0,first=0,hasFirst=false;
+ for(let i=0;i<N;i++)if(cMarked[i]){count++;if(!hasFirst){first=C40[i];hasFirst=true;}}
+ byId('cSelectedCount').textContent=`${count}칸 선택`;
+ const enabled=count>0;
+ byId('cValueInput').disabled=!enabled;byId('cValueSlider').disabled=!enabled;
+ if(enabled){byId('cValueInput').value=String(first);byId('cValueSlider').value=String(first);}
+ else{byId('cValueInput').value='0';byId('cValueSlider').value='0';}
+ showCSelection();
+}
+function markCBrush(point){
+ const radius=Math.floor(cBrush/2);
+ for(let y=Math.max(0,point.y-radius);y<=Math.min(W-1,point.y+radius);y++)
+ for(let x=Math.max(0,point.x-radius);x<=Math.min(W-1,point.x+radius);x++)cMarked[y*W+x]=1;
+}
+function markCLine(from,to){
+ const steps=Math.max(1,Math.abs(to.x-from.x),Math.abs(to.y-from.y));
+ for(let k=0;k<=steps;k++)markCBrush({x:Math.round(from.x+(to.x-from.x)*k/steps),y:Math.round(from.y+(to.y-from.y)*k/steps)});
+}
+function markCRect(a,b){
+ cMarked.fill(0);
+ for(let y=Math.min(a.y,b.y);y<=Math.max(a.y,b.y);y++)
+ for(let x=Math.min(a.x,b.x);x<=Math.max(a.x,b.x);x++)cMarked[y*W+x]=1;
+}
+function snapshotC(){cHistory.push(C40.slice());if(cHistory.length>25)cHistory.shift();}
+function applyCValue(value,save=true){
+ if(!Array.prototype.some.call(cMarked,Boolean))return;
+ const v=clip(value);
+ let changed=false;for(let i=0;i<N;i++)if(cMarked[i]&&C40[i]!==v){changed=true;break;}
+ if(save&&changed)snapshotC();
+ for(let i=0;i<N;i++)if(cMarked[i])C40[i]=v;
+ scheduleRender();
+ byId('cValueInput').value=String(v);byId('cValueSlider').value=String(v);
+}
+function finishCSelection(){cPainting=false;cAnchor=null;cLastPoint=null;syncCEditor();}
+for(const b of document.querySelectorAll('#cBrushTools [data-c-brush]'))b.addEventListener('click',()=>{
+ cBrush=Number(b.dataset.cBrush);cRectangle=false;
+ document.querySelectorAll('#cBrushTools .tool').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');
+});
+byId('cRectMode').addEventListener('click',()=>{
+ cRectangle=true;document.querySelectorAll('#cBrushTools .tool').forEach(x=>x.classList.remove('selected'));byId('cRectMode').classList.add('selected');
+});
+byId('cUnselect').addEventListener('click',()=>{cMarked.fill(0);finishCSelection();});
+byId('cValueSlider').addEventListener('pointerdown',()=>{cEditSnapshot=C40.slice();});
+byId('cValueSlider').addEventListener('input',e=>{
+ if(cEditSnapshot){if(!cEditSnapshot._used){snapshotC();cEditSnapshot._used=true;}}
+ else{snapshotC();cEditSnapshot={_used:true};}
+ applyCValue(Number(e.target.value),false);
+});
+for(const evt of ['pointerup','pointercancel','change','blur'])byId('cValueSlider').addEventListener(evt,()=>{cEditSnapshot=null;});
+const cValInput=byId('cValueInput');
+cValInput.addEventListener('input',()=>{
+ if(cValInput.value.trim()===''||cValInput.validity.badInput)return;
+ const v=Number(cValInput.value);if(!Number.isFinite(v)||v<0||v>255)return;
+ applyCValue(v,true);
+});
+cValInput.addEventListener('change',()=>{
+ const v=Number(cValInput.value);if(cValInput.value.trim()!==''&&Number.isFinite(v))applyCValue(v,true);
+ else syncCEditor();
+});
+cValInput.addEventListener('blur',()=>{
+ const v=Number(cValInput.value);if(cValInput.value.trim()===''||!Number.isFinite(v))syncCEditor();
+});
+cTarget.addEventListener('pointerdown',e=>{
+ if(e.button!==undefined&&e.button!==0)return;
+ const point=CPointFromClient(e.clientX,e.clientY);if(!point)return;
+ e.preventDefault();
+ // Mouse: move to preview and click to commit. Touch: move finger to preview, release to commit.
+ if(currentPortable){
+   if(e.pointerType==='touch'||e.pointerType==='pen'){
+     touchPlacement={pointerId:e.pointerId,item:currentPortable};
+     updateStampPreview(currentPortable,point);
+     try{cTarget.setPointerCapture(e.pointerId);}catch{}
+   }else{
+     stampIntoC(currentPortable,point);currentPortable=null;updatePortableStickers();
+   }
+   return;
+ }
+ cMarked.fill(0);cPainting=true;cAnchor=point;cLastPoint=point;
+ if(cRectangle)markCRect(point,point);else markCBrush(point);
+ syncCEditor();
+ try{cTarget.setPointerCapture(e.pointerId);}catch{}
+});
+cTarget.addEventListener('pointermove',e=>{
+ if(touchPlacement){
+   updateStampPreview(touchPlacement.item,CPointFromClientClamped(e.clientX,e.clientY));return;
+ }
+ if(currentPortable&&!cPainting){updateStampPreview(currentPortable,CPointFromClient(e.clientX,e.clientY));return;}
+ if(!cPainting)return;
+ const p=CPointFromClientClamped(e.clientX,e.clientY);if(!p)return;
+ if(cRectangle)markCRect(cAnchor,p);else markCLine(cLastPoint,p);
+ cLastPoint=p;syncCEditor();
+});
+cTarget.addEventListener('pointerleave',()=>{if(!touchPlacement)clearStampPreview();});
+cTarget.addEventListener('pointerup',e=>{
+ if(touchPlacement&&touchPlacement.pointerId===e.pointerId){
+   const {item}=touchPlacement;touchPlacement=null;
+   const p=CPointFromClientClamped(e.clientX,e.clientY);
+   if(p){stampIntoC(item,p);currentPortable=null;updatePortableStickers();}
+   clearStampPreview();
+ }else if(cPainting)finishCSelection();
+ try{cTarget.releasePointerCapture(e.pointerId);}catch{}
+});
+cTarget.addEventListener('pointercancel',()=>{
+ if(touchPlacement)touchPlacement=null;
+ clearStampPreview();if(cPainting)finishCSelection();
+});
+function CPointFromClientClamped(x,y){
+ const r=cTarget.getBoundingClientRect();
+ if(r.width===0||r.height===0)return null;
+ return {x:Math.max(0,Math.min(W-1,Math.floor((x-r.left)/r.width*W))),y:Math.max(0,Math.min(W-1,Math.floor((y-r.top)/r.height*W)))};
+}
+syncCEditor();
+const cGhost=document.createElement('div');cGhost.className='drag-ghost';
+const cGhostCanvas=document.createElement('canvas');cGhost.append(cGhostCanvas);document.body.append(cGhost);
+function connectDrag(card,item){
+ let start=null,dragging=false;
+ card.addEventListener('pointerdown',e=>{
+   if(e.button!==undefined&&e.button!==0)return;
+   start={x:e.clientX,y:e.clientY};dragging=false;
+   try{card.setPointerCapture(e.pointerId);}catch{}
+ });
+ card.addEventListener('pointermove',e=>{
+   if(!start)return;
+   if(!dragging&&Math.hypot(e.clientX-start.x,e.clientY-start.y)>7){
+     dragging=true;selectPortable(item);stickerThumb(item,cGhostCanvas);cGhost.style.display='block';
+   }
+   if(dragging){
+     e.preventDefault();cGhost.style.left=e.clientX+'px';cGhost.style.top=e.clientY+'px';
+     updateStampPreview(item,CPointFromClient(e.clientX,e.clientY));
+   }
+ });
+ card.addEventListener('pointerup',e=>{
+   if(!start)return;
+   const wasDragging=dragging;start=null;dragging=false;cGhost.style.display='none';
+   clearStampPreview();
+   if(wasDragging){
+     e.preventDefault();e.stopPropagation();card.dataset.suppressClick='yes';
+     const p=CPointFromClient(e.clientX,e.clientY);
+     if(p){stampIntoC(item,p);currentPortable=null;updatePortableStickers();}
+   }
+ });
+ card.addEventListener('pointercancel',()=>{start=null;dragging=false;cGhost.style.display='none';clearStampPreview();});
+}
+byId('undoC').addEventListener('click',()=>{
+ clearStampPreview();if(!cHistory.length)return;
+ C40.set(cHistory.pop());scheduleRender();syncCEditor();
+ byId('stickerPlacementHint').textContent='마지막 C 배치를 되돌렸습니다.';
+});
+byId('clearC').addEventListener('click',()=>{
+ clearStampPreview();C40.fill(0);cHistory=[];currentPortable=null;cMarked.fill(0);updatePortableStickers();scheduleRender();syncCEditor();
+ byId('stickerPlacementHint').textContent='C 초기화 완료';
+});
+refreshSheetReady();setSheetMode('paint');
+
+render2();
 })();
 </script>
 </body>
