@@ -146,7 +146,7 @@ h1{font-size:clamp(29px,3.5vw,46px);font-weight:830;letter-spacing:-1.7px;margin
 /* Page 2: Four simultaneous image matrices for addition/subtraction */
 .addsub-page .ab-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 13px}
 .addsub-page .ab-head h2{font-size:clamp(20px,2.2vw,28px);letter-spacing:-.6px;margin:0}
-.addsub-page .ab-four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(9px,1.25vw,17px);align-items:start}
+.addsub-page .ab-four{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(9px,1.25vw,17px);align-items:start}
 .addsub-page .ab-panel{background:white;border:1px solid #dfe6f0;border-radius:17px;padding:clamp(9px,1.25vw,17px);min-width:0;box-shadow:0 3px 13px #30406509}
 .addsub-page .ab-panel.ab-plus{border-color:#c4d9f8}.addsub-page .ab-panel.ab-minus{border-color:#f0ccd4}
 .addsub-page .ab-label{display:flex;align-items:center;justify-content:space-between;font-weight:820;font-size:19px;margin:0 0 10px;gap:5px}
@@ -161,7 +161,7 @@ h1{font-size:clamp(29px,3.5vw,46px);font-weight:830;letter-spacing:-1.7px;margin
 .addsub-page .ab-btn{border:1px solid #dae2f0;color:#4d5e7a;font-weight:720;border-radius:9px;min-height:38px;padding:8px 12px;background:#fff;font-size:13px}
 .addsub-page .ab-btn.active{color:#244cbb;border-color:#7594ea;background:#eff4ff}
 .addsub-page .ab-btn.ab-clear{margin-left:auto}
-.addsub-page .ab-adjust{display:flex;align-items:center;gap:14px;background:#f6f8ff;padding:12px 15px;border-radius:11px}
+.addsub-page .ab-adjust{display:flex;align-items:center;gap:14px;background:#f6f8ff;padding:12px 15px;border-radius:11px;margin-top:12px}
 .addsub-page .ab-adjust label{font-size:15px;font-weight:790;white-space:nowrap}
 .addsub-page .ab-adjust input[type=range]{flex:1;min-width:60px;height:32px;accent-color:#315fee;cursor:pointer}
 .addsub-page .ab-adjust input[type=number]{width:77px;border-radius:8px;border:1px solid #bfcce5;height:40px;padding:5px 7px;text-align:center;font-size:17px;font-weight:730;color:#3153a6;background:#fff}
@@ -169,6 +169,15 @@ h1{font-size:clamp(29px,3.5vw,46px);font-weight:830;letter-spacing:-1.7px;margin
 .addsub-page .ab-hint{color:#6f8099;font-size:12px;font-weight:650;min-height:18px}
 .addsub-page .ab-math{display:flex;flex-wrap:wrap;gap:16px;color:#536784;font-size:13px;font-weight:730;align-items:center}
 .addsub-page .ab-math strong{color:#193554}
+.addsub-page .ab-grid{max-width:445px;margin:0 auto}
+.addsub-page .ab-edit-panel .ab-toolbar{margin-top:12px}
+.addsub-page .ab-edit-panel .ab-math{margin-top:12px}
+.addsub-page .ab-show-results{display:block;width:100%;margin-top:10px;min-height:44px;border:0;border-radius:10px;background:#2d55c4;color:#fff;font-size:15px;font-weight:850;cursor:pointer;box-shadow:0 3px 9px #254ba329}
+.addsub-page .ab-show-results.pending::after{content:'  •';color:#ffe07a}
+.addsub-page .ab-show-results:active{transform:translateY(1px)}
+.addsub-page .ab-plus,.addsub-page .ab-minus{transition:border-color .2s ease,opacity .2s ease}
+.addsub-page .ab-pending{border-color:#bccde5;opacity:.92}
+
 @media(max-width:1580px){.addsub-page .ab-four{grid-template-columns:repeat(2,minmax(0,1fr))}.addsub-page .ab-cell{font-size:clamp(6px,.85vw,10px)}}
 @media(max-width:620px){.addsub-page .ab-four{grid-template-columns:1fr}.addsub-page .ab-cell{font-size:clamp(6px,1.8vw,8px)}.addsub-page .ab-adjust{flex-wrap:wrap}.addsub-page .ab-adjust label{width:100%}.addsub-page .ab-head h2{font-size:20px}}
 
@@ -189,23 +198,21 @@ h1{font-size:clamp(29px,3.5vw,46px);font-weight:830;letter-spacing:-1.7px;margin
   <div class="ab-head"><h2>덧셈과 뺄셈</h2></div>
   <div class="ab-four">
     <article class="ab-panel"><div class="ab-label"><span>A</span></div><div id="abGridA" class="ab-grid" data-kind="a" aria-label="행렬 A: 고양이 이미지"></div></article>
-    <article class="ab-panel"><div class="ab-label"><span>B</span></div><div id="abGridB" class="ab-grid" data-kind="b" aria-label="변화량 B, 드래그 영역 선택"></div></article>
+    <article class="ab-panel ab-edit-panel"><div class="ab-label"><span>B</span></div><div id="abGridB" class="ab-grid" data-kind="b" aria-label="행렬 B, 드래그 영역 선택"></div>
+      <div class="ab-adjust"><label for="abValueRange">B 원소값</label><input type="range" id="abValueRange" min="0" max="255" step="1" value="50" disabled aria-label="선택 원소에 적용할 B값"><input type="number" id="abValueNumber" min="0" max="255" step="1" value="50" disabled aria-label="B 원소값 직접 입력"></div>
+      <button type="button" class="ab-show-results" id="abShowResults">결과 보기</button>
+      <div class="ab-toolbar">
+        <button type="button" class="ab-btn active" data-ab-brush="1">1칸</button>
+        <button type="button" class="ab-btn" data-ab-brush="3">3×3</button>
+        <button type="button" class="ab-btn" data-ab-brush="5">5×5</button>
+        <button type="button" class="ab-btn" id="abRect">사각형 선택</button>
+        <button type="button" class="ab-btn" id="abUnselect">선택 해제</button>
+        <button type="button" class="ab-btn ab-clear" id="abReset">B 초기화</button>
+      </div>
+      <div class="ab-math"><span id="abSelectionCount">선택된 원소 0개</span><span id="abExample">A + 0 = A　·　A − 0 = A</span></div>
+    </article>
     <article class="ab-panel ab-plus"><div class="ab-label"><span>A + B</span></div><div id="abGridPlus" class="ab-grid" data-kind="plus" aria-label="덧셈 결과"></div></article>
     <article class="ab-panel ab-minus"><div class="ab-label"><span>A − B</span></div><div id="abGridMinus" class="ab-grid" data-kind="minus" aria-label="뺄셈 결과"></div></article>
-  </div>
-  <div class="ab-controls">
-    <div class="ab-toolbar">
-      <button type="button" class="ab-btn active" data-ab-brush="1">1칸</button>
-      <button type="button" class="ab-btn" data-ab-brush="3">3×3</button>
-      <button type="button" class="ab-btn" data-ab-brush="5">5×5</button>
-      <button type="button" class="ab-btn" id="abRect">사각형 선택</button>
-
-
-      <button type="button" class="ab-btn" id="abUnselect">선택 해제</button>
-      <button type="button" class="ab-btn ab-clear" id="abReset">B 초기화</button>
-    </div>
-    <div class="ab-adjust"><label for="abValueRange">B 원소값</label><input type="range" id="abValueRange" min="0" max="255" step="1" value="50" disabled aria-label="선택 원소에 적용할 B값"><input type="number" id="abValueNumber" min="0" max="255" step="1" value="50" disabled aria-label="B 원소값 직접 입력"></div>
-    <div class="ab-math"><span id="abSelectionCount">선택된 원소 0개</span><span id="abExample">A + 0 = A　·　A − 0 = A</span></div>
   </div>
 </section>
 <section class="page" id="page3" aria-label="3페이지">
@@ -326,7 +333,10 @@ const A40=[248,248,248,249,249,250,250,251,251,251,252,252,252,253,253,253,253,2
 // Page 3: C is an image-valued matrix. A remains immutable.
 const C40=new Uint16Array(N); // C=0 leaves A unchanged; positive C darkens A by subtraction.
 const byId=id=>document.getElementById(id);
-const clip=v=>Math.max(0,Math.min(255,Math.round(v)));
+// Guard against binary floating-point values such as 15 * 4.1 = 61.49999999999999.
+ // Standard half-up rounding for nonnegative pixel intensities (61.5 -> 62).
+ const roundPixel=v=>Math.round(v+Number.EPSILON*Math.max(1,Math.abs(v))*4);
+ const clip=v=>Math.max(0,Math.min(255,roundPixel(v)));
 const get3=()=>A3.map((v,i)=>clip(v*FACTOR3[i]));
 const get40=()=>A40.map((v,i)=>clip(v-C40[i]));
 const pxCells=(container,values)=>{container.replaceChildren();values.forEach(v=>{const d=document.createElement('div');d.style.backgroundColor=`rgb(${v},${v},${v})`;container.append(d);});};
@@ -342,7 +352,7 @@ FACTOR3.forEach((v,i)=>{
   inp.setAttribute('aria-label',`${Math.floor(i/3)+1}행 ${i%3+1}열 배율 슬라이더`);
   const setFactor=(value)=>{FACTOR3[i]=value;inp.value=String(factorToPosition(value));refresh1();};
   attachNumberInput(output,()=>FACTOR3[i],setFactor);
-  inp.addEventListener('input',()=>{FACTOR3[i]=positionToFactor(inp.value);updateNumericText(output,FACTOR3[i]);refresh1();});
+  inp.addEventListener('input',()=>{FACTOR3[i]=Number(displayFactor(positionToFactor(inp.value)));updateNumericText(output,FACTOR3[i]);refresh1();});
   cell.append(output,inp);byId('factors1').append(cell);
 });refresh1();
 
@@ -366,7 +376,7 @@ function refreshScalarFirst(){
 }
 const scalarKSlider=byId('scalarKSlider'),scalarKInput=byId('scalarKInput');
 scalarKSlider.addEventListener('input',()=>{
-  scalarK=positionToFactor(scalarKSlider.value);
+  scalarK=Number(displayFactor(positionToFactor(scalarKSlider.value)));
   updateNumericText(scalarKInput,scalarK);
   refreshScalarFirst();
 });
@@ -440,7 +450,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){zoomModal.hidden=tr
 const SW=96,SH=128,SN=SW*SH;
 const STICKERS=[{"id":"cute_0","name":"리본","box":[0,0,32,32]},{"id":"cute_1","name":"별","box":[32,0,64,32]},{"id":"cute_2","name":"꽃","box":[64,0,96,32]},{"id":"cute_3","name":"선글라스","box":[0,32,32,64]},{"id":"cute_4","name":"하트","box":[32,32,64,64]},{"id":"cute_5","name":"왕관","box":[64,32,96,64]},{"id":"cute_6","name":"토끼귀","box":[0,64,32,96]},{"id":"cute_7","name":"체리","box":[32,64,64,96]},{"id":"cute_8","name":"구름","box":[64,64,96,96]},{"id":"cute_9","name":"고양이귀","box":[0,96,32,128]},{"id":"cute_10","name":"초승달","box":[32,96,64,128]},{"id":"cute_11","name":"파티모자","box":[64,96,96,128]}];
 const SHEET_A=new Uint8Array(SN).fill(255);
-const SHEET_B=new Float32Array(SN).fill(1);
+const SHEET_B=new Float64Array(SN).fill(1);
 const sheetMarked=new Uint8Array(SN);
 const SHEET_RGB='data:image/png;base64,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';
 let sheetMode='paint',sheetBrush=7,sheetPainting=false,sheetLast=null,rectAnchor=null;
@@ -649,7 +659,7 @@ attachNumberInput(byId('sheetFactorInput'),()=>{
  return 1;
 },applySheetFactor);
 byId('sheetFactorSlider').addEventListener('input',()=>{
- const factor=positionToFactor(byId('sheetFactorSlider').value);
+ const factor=Number(displayFactor(positionToFactor(byId('sheetFactorSlider').value)));
  updateNumericText(byId('sheetFactorInput'),factor);
  applySheetFactor(factor);
 });
@@ -948,7 +958,8 @@ byId('clearC').addEventListener('click',()=>{
  const sz=24,count=sz*sz;
  // Page 2 grayscale flat cartoon cat; independent from page 5 image.
  const A=Uint8Array.from([239,239,238,250,248,236,237,239,239,239,239,239,239,239,239,239,239,238,235,246,252,239,239,239,239,238,244,176,202,255,246,237,239,239,239,239,239,239,239,239,237,242,255,214,145,233,241,239,239,237,247,70,22,108,209,248,236,239,239,239,239,239,239,237,244,229,124,34,28,217,244,238,239,241,232,58,47,19,38,215,247,236,239,238,238,239,237,241,240,75,10,59,33,194,249,236,237,245,213,33,121,137,48,62,235,244,240,245,245,241,239,250,99,20,117,141,23,166,252,236,236,250,186,28,132,159,147,34,92,244,229,214,214,224,250,129,15,106,161,147,33,131,254,235,236,254,151,32,148,154,159,78,14,84,101,102,103,100,93,22,48,153,155,154,47,101,253,236,235,255,118,43,152,118,66,97,159,189,159,145,147,153,188,164,106,65,109,167,73,68,245,238,237,250,91,21,39,75,172,218,215,219,170,92,89,150,219,214,219,182,86,59,42,51,233,241,240,235,69,52,94,199,212,202,203,208,201,134,137,187,211,203,202,210,207,102,55,41,205,248,239,242,151,101,152,136,166,219,212,205,207,200,204,205,206,212,221,174,135,153,110,124,228,242,237,249,94,133,193,192,208,164,180,214,206,208,208,206,213,180,163,211,195,191,150,81,242,239,246,212,64,206,216,214,195,177,30,163,215,204,205,213,173,190,65,102,227,212,217,70,190,251,253,181,75,217,214,210,81,98,21,96,221,208,208,223,115,80,58,36,204,215,222,90,156,255,252,184,70,214,211,225,111,8,27,155,213,187,188,208,174,22,15,97,222,212,224,84,159,255,245,220,55,183,204,201,205,149,172,236,226,106,88,216,238,184,145,202,206,202,197,56,199,249,237,251,97,124,201,184,181,198,237,226,249,173,151,255,227,238,205,182,184,199,147,78,243,239,237,248,203,70,207,201,189,189,228,208,145,142,139,147,208,231,191,186,196,213,77,181,251,236,239,236,251,165,102,206,222,218,211,220,211,218,212,197,219,211,215,219,210,115,144,249,237,239,239,239,236,254,171,83,117,195,218,217,218,211,212,221,218,218,201,127,81,153,252,237,239,239,239,239,239,236,252,213,108,74,105,135,166,163,160,168,138,109,76,98,200,253,237,239,239,239,239,239,239,239,236,245,254,215,162,122,90,107,110,89,117,156,208,251,248,236,239,239,239,239,239,239,239,239,239,238,236,245,252,254,233,135,126,223,255,252,246,237,237,239,239,239,239,239,239,239,239,239,239,239,239,238,236,236,242,233,230,243,236,236,237,239,239,239,239,239,239,239]);
- const B=new Uint8Array(count), selected=new Uint8Array(count),nodes={};
+ const B=new Uint8Array(count), appliedB=new Uint8Array(count), selected=new Uint8Array(count),nodes={};
+   let resultsPending=false;
  let brush=1,rect=false,painting=false,anchor=null,last=null;
  const clamp=n=>Math.max(0,Math.min(255,Math.round(n)));
  function build(el,kind){
@@ -964,14 +975,16 @@ byId('clearC').addEventListener('click',()=>{
  function render(){
    for(let i=0;i<count;i++){
       paintCell(nodes.a[i],A[i]);paintCell(nodes.b[i],B[i]);
-      paintCell(nodes.plus[i],Math.min(255,A[i]+B[i]));paintCell(nodes.minus[i],Math.max(0,A[i]-B[i]));
-      for(const k of ['a','b','plus','minus'])nodes[k][i].classList.toggle('ab-selected',!!selected[i]);
+      paintCell(nodes.plus[i],Math.min(255,A[i]+appliedB[i]));paintCell(nodes.minus[i],Math.max(0,A[i]-appliedB[i]));
+      for(const k of ['a','b'])nodes[k][i].classList.toggle('ab-selected',!!selected[i]);
    }
    const ids=Array.from(selected).flatMap((v,i)=>v?[i]:[]);
    byId('abSelectionCount').textContent=`선택된 원소 ${ids.length}개`;
    if(ids.length){const i=ids[0];byId('abExample').textContent=`${A[i]} + ${B[i]} = ${Math.min(255,A[i]+B[i])}　·　${A[i]} − ${B[i]} = ${Math.max(0,A[i]-B[i])}`;}
    else byId('abExample').textContent='A + 0 = A　·　A − 0 = A';
    byId('abValueRange').disabled=!ids.length;byId('abValueNumber').disabled=!ids.length;
+     byId('abShowResults').classList.toggle('pending',resultsPending);
+     for(const k of ['plus','minus'])byId(k==='plus'?'abGridPlus':'abGridMinus').closest('.ab-panel').classList.toggle('ab-pending',resultsPending);
  }
  const clear=()=>selected.fill(0);
  function setBrush(x,y){const r=(brush-1)/2;for(let yy=y-r;yy<=y+r;yy++)for(let xx=x-r;xx<=x+r;xx++)if(xx>=0&&xx<sz&&yy>=0&&yy<sz)selected[yy*sz+xx]=1;}
@@ -986,9 +999,10 @@ byId('clearC').addEventListener('click',()=>{
  document.querySelectorAll('[data-ab-brush]').forEach(btn=>btn.addEventListener('click',()=>{brush=Number(btn.dataset.abBrush);rect=false;selectMode();}));
  byId('abRect').addEventListener('click',()=>{rect=true;selectMode();});
  byId('abUnselect').addEventListener('click',()=>{clear();render();});
- byId('abReset').addEventListener('click',()=>{B.fill(0);clear();byId('abValueRange').value='50';byId('abValueNumber').value='50';render();});
+ byId('abReset').addEventListener('click',()=>{B.fill(0);clear();byId('abValueRange').value='50';byId('abValueNumber').value='50';resultsPending=B.some((v,i)=>v!==appliedB[i]);render();});
+   byId('abShowResults').addEventListener('click',()=>{appliedB.set(B);resultsPending=false;render();});
  const range=byId('abValueRange'),number=byId('abValueNumber');
- function apply(raw){const v=clamp(raw);if(!Number.isFinite(Number(raw)))return;for(let i=0;i<count;i++)if(selected[i])B[i]=v;range.value=String(v);number.value=String(v);render();}
+ function apply(raw){const v=clamp(raw);if(!Number.isFinite(Number(raw)))return;for(let i=0;i<count;i++)if(selected[i])B[i]=v;resultsPending=B.some((n,i)=>n!==appliedB[i]);range.value=String(v);number.value=String(v);render();}
  range.addEventListener('input',()=>apply(range.value));
  number.addEventListener('input',()=>{if(number.value.trim()!==''&&Number.isFinite(Number(number.value)))apply(number.value);});
  number.addEventListener('change',()=>apply(number.value||'0'));
