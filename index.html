@@ -281,7 +281,7 @@ h1{font-size:clamp(29px,3.5vw,46px);font-weight:830;letter-spacing:-1.7px;margin
 </section>
 </main>
 </div>
-<div class="modal-back" id="passwordModal" hidden><form id="passwordForm" class="dialog"><h2>비밀번호</h2><input id="passwordInput" type="password" inputmode="numeric" autocomplete="off" maxlength="8" aria-label="4·5페이지 비밀번호" required><div class="error" id="passwordError" aria-live="polite"></div><div class="dialog-actions"><button class="secondary" type="button" id="closePassword">취소</button><button class="primary" type="submit">확인</button></div></form></div>
+<div class="modal-back" id="passwordModal" hidden><form id="passwordForm" class="dialog"><h2>비밀번호</h2><input id="passwordInput" type="password" inputmode="numeric" autocomplete="off" maxlength="8" aria-label="페이지 비밀번호" required><div class="error" id="passwordError" aria-live="polite"></div><div class="dialog-actions"><button class="secondary" type="button" id="closePassword">취소</button><button class="primary" type="submit">확인</button></div></form></div>
 <div class="modal-back" id="zoomModal" hidden><div class="dialog zoom-dialog" role="dialog" aria-modal="true" aria-label="행렬 확대"><div class="zoom-head"><h2 id="zoomTitle">A</h2><button class="secondary" id="closeZoom" type="button">닫기</button></div><div class="zoom-scroll"><canvas id="zoomCanvas" width="1200" height="1200"></canvas></div></div></div>
 <script>
 (() => {
@@ -418,18 +418,47 @@ function showPage(n){
  if(n===5){updatePortableStickers();scheduleRender();}
  else if(typeof clearStampPreview==='function')clearStampPreview();
 }
-let unlocked=false;try{unlocked=sessionStorage.getItem('hadamard-7737-unlocked')==='yes';}catch{}
-let requestedPage=4;
-function protectedPage(n){if(unlocked){showPage(n);return;}requestedPage=n;byId('passwordInput').value='';byId('passwordError').textContent='';byId('passwordModal').hidden=false;byId('passwordInput').focus();}
+// Each protected page has its own one-time password for this browser session.
+const pagePasswords={2:'02',3:'880',4:'7737'};
+const unlockedPages=new Set();
+for(const n of [2,3,4]){
+  try{if(sessionStorage.getItem('image-matrix-page-'+n+'-unlocked')==='yes')unlockedPages.add(n);}catch{}
+}
+let requestedPage=null;
+function protectedPage(n){
+  if(!Object.prototype.hasOwnProperty.call(pagePasswords,n)||unlockedPages.has(n)){
+    showPage(n);return;
+  }
+  requestedPage=n;
+  byId('passwordModal').querySelector('h2').textContent=n+'페이지 비밀번호';
+  byId('passwordInput').value='';
+  byId('passwordError').textContent='';
+  byId('passwordModal').hidden=false;
+  byId('passwordInput').focus();
+}
 byId('nav1').addEventListener('click',()=>showPage(1));
-byId('nav2').addEventListener('click',()=>showPage(2));
-byId('nav3').addEventListener('click',()=>showPage(3));
+byId('nav2').addEventListener('click',()=>protectedPage(2));
+byId('nav3').addEventListener('click',()=>protectedPage(3));
 byId('nav4').addEventListener('click',()=>protectedPage(4));
 byId('nav5').addEventListener('click',()=>protectedPage(5));
 byId('toPage3').addEventListener('click',()=>protectedPage(5));
 byId('closePassword').addEventListener('click',()=>{byId('passwordModal').hidden=true;});
 byId('passwordModal').addEventListener('click',e=>{if(e.target===byId('passwordModal'))byId('passwordModal').hidden=true;});
-byId('passwordForm').addEventListener('submit',e=>{e.preventDefault();if(byId('passwordInput').value==='7737'){unlocked=true;try{sessionStorage.setItem('hadamard-7737-unlocked','yes');}catch{}byId('passwordModal').hidden=true;showPage(requestedPage);}else{byId('passwordError').textContent='비밀번호가 일치하지 않습니다.';byId('passwordInput').select();}});
+byId('passwordForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const expected=pagePasswords[requestedPage];
+  if(expected && byId('passwordInput').value===expected){
+    unlockedPages.add(requestedPage);
+    try{sessionStorage.setItem('image-matrix-page-'+requestedPage+'-unlocked','yes');}catch{}
+    const n=requestedPage;
+    requestedPage=null;
+    byId('passwordModal').hidden=true;
+    showPage(n);
+  }else{
+    byId('passwordError').textContent='비밀번호가 일치하지 않습니다.';
+    byId('passwordInput').select();
+  }
+});
 let zoomKind='a';const zoomModal=byId('zoomModal');
 function renderZoom(){
  const cv=byId('zoomCanvas');
