@@ -26,7 +26,6 @@ h1{font-size:clamp(29px,3.5vw,46px);font-weight:830;letter-spacing:-1.7px;margin
 .sticker-top-tools{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
 .sticker-mode{font-size:12px;border:1px solid #dbe3ef;border-radius:9px;padding:8px 9px;background:#fff;color:#536078;font-weight:750}
 .sticker-mode.active{background:#ecf3ff;border-color:#5175df;color:#2450b9}
-.sticker-hint{font-size:12px;font-weight:720;color:#8290a7;line-height:1.5;min-height:22px;margin-top:8px}
 .sticker-canvas-wrap{position:relative;max-width:365px;margin:0 auto}
 .sticker-pop{position:absolute;bottom:8px;left:8px;right:8px;text-align:center;background:#fffdf2ec;border:1px solid #e3d7ab;border-radius:10px;padding:7px;font-size:12px;font-weight:730;color:#665222;pointer-events:none}
 .sticker-pop[hidden]{display:none}
@@ -81,7 +80,6 @@ h1{font-size:clamp(29px,3.5vw,46px);font-weight:830;letter-spacing:-1.7px;margin
 .addition-c-wrap .drop-outline.is-over{border-color:#527cf3;background:#4776ef27}
 .addition-page .page3-sticker-head{margin-top:14px}
 .addition-page .portable-stickers{margin-top:0}
-.addition-page .sticker-hint{min-height:26px}
 .addition-page .portable-card{min-height:74px}
 .addition-page .portable-card.chosen{border-color:#365fee;background:#eaf1ff}
 @media(max-width:700px){.addition-page .panels{grid-template-columns:repeat(3,minmax(0,1fr))}.addition-page .panel:last-child{grid-column:auto}.addition-page .panel:last-child .canvas-image,.addition-page .panel:last-child .matrix-canvas{grid-column:auto;grid-row:auto}}
@@ -98,8 +96,6 @@ h1{font-size:clamp(29px,3.5vw,46px);font-weight:830;letter-spacing:-1.7px;margin
 .addition-page .addition-c-wrap .selection-overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;image-rendering:pixelated;border-radius:10px}
 /* A-C follows the C selection throughout dragging and while values are being edited. */
 .addition-page .result-selection-overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;image-rendering:pixelated;border-radius:10px}
-.addition-page .result-selection-hint{position:absolute;top:8px;right:8px;z-index:3;pointer-events:none;font-size:11px;line-height:1.3;font-weight:800;color:#8b410d;background:#fff8e8ed;border:1px solid #f5cd81;border-radius:8px;padding:5px 8px;box-shadow:0 2px 8px #80501d22}
-.addition-page .result-selection-hint[hidden]{display:none}
 
 .addition-page .c-edit-tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:12px 0 8px}
 .addition-page .c-edit-tools .tool{padding:7px 9px;font-size:12px;min-height:35px;border:1px solid #d9e3f0;border-radius:9px;background:#fff;color:#586a89;font-weight:740}
@@ -229,7 +225,6 @@ h1{font-size:clamp(29px,3.5vw,46px);font-weight:830;letter-spacing:-1.7px;margin
   <div class="sticker-canvas-wrap"><canvas id="sheetOriginal" class="canvas-image can-paint" width="384" height="512" aria-label="꾸미기 스티커를 드래그하여 지울 영역 선택"></canvas></div>
   <div class="sticker-top-tools"><button id="editSticker" class="sticker-mode active" type="button">드래그 칠하기</button><button id="rectSticker" class="sticker-mode" type="button">사각형 영역</button></div>
   <div class="sticker-top-tools" id="sheetBrushes"><button class="tool" data-sheet-brush="1" type="button">1칸</button><button class="tool" data-sheet-brush="3" type="button">3칸</button><button class="tool selected" data-sheet-brush="7" type="button">7칸</button><button class="tool" data-sheet-brush="15" type="button">15칸</button></div>
-  <div class="sticker-hint">드래그로 영역을 선택한 뒤 B를 0으로 바꾸면 검정색으로 마스킹됩니다.</div>
   <div class="matrix-bar"><span>96 × 128</span><button class="subtle-btn zoom" type="button" data-zoom="sa">숫자 확대</button></div><canvas id="sheetOriginalNums" class="matrix-canvas" width="768" height="1024" aria-label="원본 스티커 숫자 행렬"></canvas>
 </article>
 <article class="panel panel-center">
@@ -244,7 +239,7 @@ h1{font-size:clamp(29px,3.5vw,46px);font-weight:830;letter-spacing:-1.7px;margin
   <div class="center-preview-pad"><span class="selected-count" id="sheetSelectedCount">0칸</span><button type="button" id="eraseSheetMarked" class="subtle-btn erase-selected">선택 영역 0</button><button class="subtle-btn zoom" type="button" data-zoom="sb">확대</button></div>
 </article>
 <article class="panel">
-  <div class="panel-top"><span class="math-label" title="원소별 아다마르 곱: B=0이면 검정색, B=1이면 원본 유지">A ⊙ B</span><span class="dim">96 × 128</span></div>
+  <div class="panel-top"><span class="math-label">A ⊙ B</span><span class="dim">96 × 128</span></div>
   <canvas id="sheetResult" class="canvas-image" width="384" height="512" aria-label="B가 0인 곳은 검정색으로 마스킹한 결과 이미지"></canvas>
   <div class="matrix-bar"><span>결과 행렬</span><button class="subtle-btn zoom" type="button" data-zoom="sc">확대</button></div>
   <canvas id="sheetResultNums" class="matrix-canvas" width="768" height="1024" aria-label="소거 결과 숫자 행렬"></canvas>
@@ -261,19 +256,18 @@ h1{font-size:clamp(29px,3.5vw,46px);font-weight:830;letter-spacing:-1.7px;margin
    <canvas id="num2a" class="matrix-canvas" width="720" height="720" aria-label="원본 숫자 행렬 A"></canvas>
   </article>
   <article class="panel panel-center">
-   <div class="panel-top"><span class="math-label">C</span><span class="dim">40 × 40 · 초기값 0</span></div>
+   <div class="panel-top"><span class="math-label">C</span><span class="dim">40 × 40</span></div>
    <div class="addition-c-wrap"><canvas id="cPicture" class="canvas-image c-drop-target" width="400" height="400" aria-label="C행렬에서 드래그로 원소를 선택하거나 스티커를 놓는 영역"></canvas><canvas id="cSelectionOverlay" class="selection-overlay" width="400" height="400" aria-hidden="true"></canvas><canvas id="cStampPreview" class="stamp-preview-layer" width="400" height="400" aria-hidden="true"></canvas><div class="drop-outline" id="cDropOutline" aria-hidden="true"></div></div>
    <div class="c-edit-tools" id="cBrushTools"><button class="tool selected" data-c-brush="1" type="button">1칸</button><button class="tool" data-c-brush="3" type="button">3칸</button><button class="tool" data-c-brush="5" type="button">5칸</button><button class="tool" id="cRectMode" type="button">사각형</button><button class="tool c-clear-select" id="cUnselect" type="button">선택 해제</button><span class="selection-count" id="cSelectedCount">0칸 선택</span></div>
    <div class="c-edit-range"><div class="range-top"><span>C의 선택 원소값</span><input id="cValueInput" type="number" min="0" max="255" step="1" value="0" disabled inputmode="numeric" aria-label="선택한 C 행렬 원소값 직접 입력"></div><input id="cValueSlider" type="range" min="0" max="255" step="1" value="0" disabled aria-label="선택한 C 행렬 원소값 슬라이더"><div class="range-ticks"><span>0</span><span>128</span><span>255</span></div></div>
    <div class="page3-sticker-head"><span>4페이지에서 추출한 스티커</span><div class="mini-controls"><button type="button" id="undoC" class="subtle-btn">되돌리기</button><button type="button" id="clearC" class="subtle-btn">C 초기화</button></div></div>
-   <div id="portableStickers" class="portable-stickers" aria-label="C로 옮길 스티커 목록"><span class="empty-stickers">4페이지에서 스티커를 남겨 주세요.</span></div>
-   <div class="sticker-hint" id="stickerPlacementHint" aria-live="polite">스티커를 C로 가져가면 오른쪽에 배치 미리보기가 나타납니다.</div>
+   <div id="portableStickers" class="portable-stickers" aria-label="C로 옮길 스티커 목록"><span class="empty-stickers">스티커 없음</span></div>
    <div class="matrix-bar"><span>C의 원소</span><button class="subtle-btn zoom" data-zoom="b" type="button">숫자 확대</button></div>
    <canvas id="num2b" class="matrix-canvas" width="720" height="720" aria-label="스티커가 배치된 C의 숫자 행렬"></canvas>
   </article>
   <article class="panel">
    <div class="panel-top"><span class="math-label">A − C</span><span class="dim">40 × 40</span></div>
-   <div class="result-preview-wrap"><canvas id="result2" class="canvas-image" width="400" height="400" aria-label="A에서 C를 원소별로 뺀 결과 이미지"></canvas><canvas id="resultStampPreview" class="stamp-preview-layer" width="400" height="400" aria-hidden="true"></canvas><canvas id="resultSelectionOverlay" class="result-selection-overlay" width="400" height="400" aria-hidden="true"></canvas><span class="result-selection-hint" id="resultSelectionHint" hidden>C에서 선택한 영역</span><span class="result-preview-badge" id="previewResultLabel" hidden>배치 미리보기 · A − C</span></div>
+   <div class="result-preview-wrap"><canvas id="result2" class="canvas-image" width="400" height="400" aria-label="A에서 C를 원소별로 뺀 결과 이미지"></canvas><canvas id="resultStampPreview" class="stamp-preview-layer" width="400" height="400" aria-hidden="true"></canvas><canvas id="resultSelectionOverlay" class="result-selection-overlay" width="400" height="400" aria-hidden="true"></canvas><span class="result-preview-badge" id="previewResultLabel" hidden>배치 미리보기 · A − C</span></div>
    <div class="matrix-bar"><span>뺄셈 결과 행렬</span><button class="subtle-btn zoom" data-zoom="c" type="button">숫자 확대</button></div>
    <canvas id="num2c" class="matrix-canvas" width="720" height="720" aria-label="A 빼기 C 숫자 행렬"></canvas>
   </article>
@@ -712,7 +706,7 @@ function CPointFromClient(clientX,clientY){
 function updatePortableStickers(){
  const host=byId('portableStickers');host.replaceChildren();const items=getExtracts();
  if(currentPortable && !items.some(a=>a.id===currentPortable.id))currentPortable=null;
- if(!items.length){const empty=document.createElement('span');empty.className='empty-stickers';empty.textContent='2페이지에서 장식을 남겨 주세요.';host.append(empty);return;}
+ if(!items.length){const empty=document.createElement('span');empty.className='empty-stickers';empty.textContent='스티커 없음';host.append(empty);return;}
  for(const item of items){
    const card=document.createElement('div');card.className='portable-card';card.tabIndex=0;
    card.setAttribute('role','button');card.setAttribute('aria-label',item.name+' C에 추가하기');
@@ -728,7 +722,6 @@ function updatePortableStickers(){
 }
 function selectPortable(item){
  clearStampPreview();currentPortable=item;
- byId('stickerPlacementHint').textContent=`${item.name}: C 위로 끌어 놓거나 C를 터치하세요.`;
  document.querySelectorAll('.portable-card').forEach(card=>card.classList.toggle('chosen',card.getAttribute('aria-label')===item.name+' C에 추가하기'));
 }
 // Single source of truth for preview and committed placement; both use identical pixel arithmetic.
@@ -790,7 +783,6 @@ function updateStampPreview(item,point){
  renderStampLayer('resultStampPreview',projected,true);
  byId('previewResultLabel').hidden=false;
  byId('cDropOutline').classList.add('is-over');
- byId('stickerPlacementHint').textContent=`${item.name}: 오른쪽 A − C에 배치 미리보기 표시 중`;
 }
 function stampIntoC(item,point){
  if(!item||!point)return;
@@ -799,7 +791,6 @@ function stampIntoC(item,point){
  cHistory.push(C40.slice());if(cHistory.length>25)cHistory.shift();
  for(const {index,increment} of projection.changes)C40[index]=Math.min(255,C40[index]+increment);
  clearStampPreview();scheduleRender();syncCEditor();
- byId('stickerPlacementHint').textContent=`${item.name} → C 적용 완료 (A − C)`;
 }
 // Drag over C to select pixels; the value slider then edits all selected elements.
 const cTarget=byId('cPicture');
@@ -824,9 +815,6 @@ function showCSelection(){
      ctx.strokeRect(x+.75,y+.75,unit-1.5,unit-1.5);
    }
  });
- const hint=byId('resultSelectionHint');
- hint.hidden=!counts;
- if(counts)hint.textContent=`C에서 선택한 ${counts}칸 · A − C 변경 영역`;
 }
 function syncCEditor(){
  let count=0,first=0,hasFirst=false;
@@ -975,11 +963,9 @@ function connectDrag(card,item){
 byId('undoC').addEventListener('click',()=>{
  clearStampPreview();if(!cHistory.length)return;
  C40.set(cHistory.pop());scheduleRender();syncCEditor();
- byId('stickerPlacementHint').textContent='마지막 C 배치를 되돌렸습니다.';
 });
 byId('clearC').addEventListener('click',()=>{
  clearStampPreview();C40.fill(0);cHistory=[];currentPortable=null;cMarked.fill(0);updatePortableStickers();scheduleRender();syncCEditor();
- byId('stickerPlacementHint').textContent='C 초기화 완료';
 });
 
 // Page 2: actual entrywise addition/subtraction, with a 0-valued B by default.
